@@ -20,6 +20,33 @@ struct Nucleus{
 
 };
 
+struct CaseResult{
+	//flag results:
+	bool Vcm1_check;
+	bool Vcm2_check;
+	bool KEcm1_check;
+	bool KEcm2_check;
+	bool Ecm_check;
+	bool ThetaCMSum_check;
+	bool PhiCMSep_check;
+
+	//CM constants results
+	Float_t Vcm1;
+	Float_t KEcm1;
+	Float_t ThetaCM1;
+	Float_t PhiCM1;
+
+	Float_t Vcm2;
+	Float_t KEcm2;
+	Float_t ThetaCM2;
+	Float_t PhiCM2;
+
+	Float_t Ecm;
+
+	//note that CM1 == observedCM  for MMM
+	// and that CM2 == missingCM   for MMM
+};
+
 struct CaseCheckResult{
 	bool Vcm1_check;
 	bool Vcm2_check;
@@ -73,13 +100,6 @@ class IMMMA_Tool_3{
 		Float_t GetBeamEnergy();
 		Float_t GetRecoilExE();
 
-		TLorentzVector GetBeamLVect();
-		TLorentzVector GetTargetLVect();
-		TLorentzVector GetEjectileLVect();
-		TLorentzVector GetRecoilLVect();
-		TLorentzVector GetBreakup1LVect();
-		TLorentzVector GetBreakup2LVect();
-
 		Float_t GetVcm_bu1();
 		Float_t GetVcm_bu2();
 		Float_t GetKEcm_bu1();
@@ -93,10 +113,10 @@ class IMMMA_Tool_3{
 		void CalculateCMConstants();
 
 		//IMM Event analysis function:
-		DoubleCaseCheckResult AnalyzeEventIMM(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi, Float_t detected1E, Float_t detected1Theta, Float_t detected1Phi, Float_t detected2E, Float_t detected2Theta, Float_t detected2Phi);
+		std::pair<CaseResult,CaseResult> AnalyzeEventIMM(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi, Float_t detected1E, Float_t detected1Theta, Float_t detected1Phi, Float_t detected2E, Float_t detected2Theta, Float_t detected2Phi);
 
 		//MMM Event analysis function:
-		DoubleCaseCheckResult AnalyzeEventMMM(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi, Float_t detectedE, Float_t detectedTheta, Float_t detectedPhi);
+		std::pair<CaseResult,CaseResult> AnalyzeEventMMM(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi, Float_t detectedE, Float_t detectedTheta, Float_t detectedPhi);
 
 	private:
 		//nuclear data
@@ -110,14 +130,6 @@ class IMMMA_Tool_3{
 		//relevant reaction data
 		Float_t beam_energy;//from experiment
 		Float_t recoil_exE;//expected/from literature
-
-		//TLorentzVectors
-		TLorentzVector beam_4vect;
-		TLorentzVector target_4vect;
-		TLorentzVector ejectile_4vect;
-		TLorentzVector recoil_4vect;
-		TLorentzVector breakup1_4vect;
-		TLorentzVector breakup2_4vect;
 
 		//Breakup CM Constants:
 		Float_t Vcm_bu1;		//constant from reaction
