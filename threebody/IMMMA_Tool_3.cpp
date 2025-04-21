@@ -59,6 +59,56 @@ void IMMMA_Tool_3::SetRecoilExE(Float_t energy){
 	this->recoil_exE = energy;
 }
 
+void IMMMA_Tool_3::SetVcm_bu1_bounds(Float_t lower, Float_t upper){
+	this->Vcm_bu1.lower = lower;
+	this->Vcm_bu1.upper = upper;
+}
+
+void IMMMA_Tool_3::SetVcm_bu1_bounds(Float_t sigma){
+	this->Vcm_bu1.lower = this->Vcm_bu1.expected - 2*sigma;
+	this->Vcm_bu1.upper = this->Vcm_bu1.expected + 2*sigma;
+}
+
+void IMMMA_Tool_3::SetVcm_bu2_bounds(Float_t lower, Float_t upper){
+	this->Vcm_bu2.lower = lower;
+	this->Vcm_bu2.upper = upper;
+}
+
+void IMMMA_Tool_3::SetVcm_bu2_bounds(Float_t sigma){
+	this->Vcm_bu2.lower = this->Vcm_bu2.expected - 2*sigma;
+	this->Vcm_bu2.upper = this->Vcm_bu2.expected + 2*sigma;
+}
+
+void IMMMA_Tool_3::SetKEcm_bu1_bounds(Float_t lower, Float_t upper){
+	this->KEcm_bu1.lower = lower;
+	this->KEcm_bu1.upper = upper;
+}
+
+void IMMMA_Tool_3::SetKEcm_bu1_bounds(Float_t sigma){
+	this->KEcm_bu1.lower = this->KEcm_bu1.expected - 2*sigma;
+	this->KEcm_bu1.upper = this->KEcm_bu1.expected + 2*sigma;
+}
+
+void IMMMA_Tool_3::SetKEcm_bu2_bounds(Float_t lower, Float_t upper){
+	this->KEcm_bu2.lower = lower;
+	this->KEcm_bu2.upper = upper;
+}
+
+void IMMMA_Tool_3::SetKEcm_bu2_bounds(Float_t sigma){
+	this->KEcm_bu2.lower = this->KEcm_bu2.expected - 2*sigma;
+	this->KEcm_bu2.upper = this->KEcm_bu2.expected + 2*sigma;
+}
+
+void IMMMA_Tool_3::SetEcm_bounds(Float_t lower, Float_t upper){
+	this->Ecm.lower = lower;
+	this->Ecm.upper = upper;
+}
+
+void IMMMA_Tool_3::SetEcm_bounds(Float_t sigma){
+	this->Ecm.lower = this->Ecm.expected - 2*sigma;
+	this->Ecm.upper = this->Ecm.expected + 2*sigma;
+}
+
 //getters
 
 Nucleus IMMMA_Tool_3::GetBeamNucleus(){
@@ -118,23 +168,23 @@ Float_t IMMMA_Tool_3::GetRecoilExE(){
 }
 
 Float_t IMMMA_Tool_3::GetVcm_bu1(){
-	return this->Vcm_bu1;
+	return this->Vcm_bu1.expected;
 }
 
 Float_t IMMMA_Tool_3::GetVcm_bu2(){
-	return this->Vcm_bu2;
+	return this->Vcm_bu2.expected;
 }
 
 Float_t IMMMA_Tool_3::GetKEcm_bu1(){
-	return this->KEcm_bu1;
+	return this->KEcm_bu1.expected;
 }
 
 Float_t IMMMA_Tool_3::GetKEcm_bu2(){
-	return this->KEcm_bu2;
+	return this->KEcm_bu2.expected;
 }
 
 Float_t IMMMA_Tool_3::GetEcm(){
-	return this->Ecm;
+	return this->Ecm.expected;
 }
 
 TString IMMMA_Tool_3::GetReactionString(){
@@ -145,50 +195,48 @@ TString IMMMA_Tool_3::GetBreakupString(){
 	return this->breakup;
 }
 
+//checkers
+bool IMMMA_Tool_3::CheckInBounds_Vcm_bu1(Float_t test){
+	return (this->Vcm_bu1.lower <= test && this->Vcm_bu1.upper >= test);
+}
+
+bool IMMMA_Tool_3::CheckInBounds_Vcm_bu2(Float_t test){
+	return (this->Vcm_bu2.lower <= test && this->Vcm_bu2.upper >= test);
+}
+
+bool IMMMA_Tool_3::CheckInBounds_KEcm_bu1(Float_t test){
+	return (this->KEcm_bu1.lower <= test && this->KEcm_bu1.upper >= test);
+}
+
+bool IMMMA_Tool_3::CheckInBounds_KEcm_bu2(Float_t test){
+	return (this->KEcm_bu2.lower <= test && this->KEcm_bu2.upper >= test);
+}
+
+bool IMMMA_Tool_3::CheckInBounds_Ecm(Float_t test){
+	return (this->Ecm.lower <= test && this->Ecm.upper >= test);
+}
+
 //init reaction function
 void IMMMA_Tool_3::CalculateCMConstants(){
 	if(this->recoil.Filled() && this->breakup1.Filled() && this->breakup2.Filled()){
-		this->Ecm = this->recoil.mass + this->recoil_exE - this->breakup1.mass - this->breakup2.mass;
-		this->Vcm_bu1 = sqrt(2*this->breakup2.mass*this->Ecm/(this->breakup1.mass*(this->breakup1.mass + this->breakup2.mass)));
-		this->Vcm_bu2 = sqrt(2*this->breakup1.mass*this->Ecm/(this->breakup2.mass*(this->breakup1.mass + this->breakup2.mass)));
-		this->KEcm_bu1 = 0.5*this->breakup1.mass*GetVcm_bu1()*GetVcm_bu1();
-		this->KEcm_bu2 = 0.5*this->breakup2.mass*GetVcm_bu2()*GetVcm_bu2();
+		this->Ecm.expected = this->recoil.mass + this->recoil_exE - this->breakup1.mass - this->breakup2.mass;
+		this->Vcm_bu1.expected = sqrt(2*this->breakup2.mass*this->Ecm.expected/(this->breakup1.mass*(this->breakup1.mass + this->breakup2.mass)));
+		this->Vcm_bu2.expected = sqrt(2*this->breakup1.mass*this->Ecm.expected/(this->breakup2.mass*(this->breakup1.mass + this->breakup2.mass)));
+		this->KEcm_bu1.expected = 0.5*this->breakup1.mass*GetVcm_bu1()*GetVcm_bu1();
+		this->KEcm_bu2.expected = 0.5*this->breakup2.mass*GetVcm_bu2()*GetVcm_bu2();
 
 		this->reaction = Form("%d%s(%d%s,%d%s)%d%s",this->target.A,this->target.sym.Data(),this->beam.A,this->beam.sym.Data(),this->ejectile.A,this->ejectile.sym.Data(),this->recoil.A,this->recoil.sym.Data());
 		this->breakup = Form("%d%s ---> %d%s + %d%s",this->recoil.A,this->recoil.sym.Data(),this->breakup1.A,this->breakup1.sym.Data(),this->breakup2.A,this->breakup2.sym.Data());
 	} else {
-		this->Ecm = -666;
-		this->Vcm_bu1 = -666;
-		this->Vcm_bu2 = -666;
-		this->KEcm_bu1 = -666;
-		this->KEcm_bu2 = -666;
+		this->Ecm.expected = -666;
+		this->Vcm_bu1.expected = -666;
+		this->Vcm_bu2.expected = -666;
+		this->KEcm_bu1.expected = -666;
+		this->KEcm_bu2.expected = -666;
 
 		this->reaction = "null";
 		this->breakup = "null";
 	}
-	//set bounds:
-	this->Vcm_bu1_bounds[0] = 0.99*this->Vcm_bu1;
-	this->Vcm_bu1_bounds[1] = 1.01*this->Vcm_bu1;
-
-	this->Vcm_bu2_bounds[0] = 0.99*this->Vcm_bu2;
-	this->Vcm_bu2_bounds[1] = 1.01*this->Vcm_bu2;
-
-	this->KEcm_bu1_bounds[0] = 0.99*this->KEcm_bu1;
-	this->KEcm_bu1_bounds[1] = 1.01*this->KEcm_bu1;
-
-	this->KEcm_bu2_bounds[0] = 0.99*this->KEcm_bu2;
-	this->KEcm_bu2_bounds[1] = 1.01*this->KEcm_bu2;
-
-	this->Ecm_bounds[0] = 0.99*this->Ecm;
-	this->Ecm_bounds[1] = 1.01*this->Ecm;
-
-	this->ThetaCMSum_bounds[0] = this->ThetaCMSum-0.5;
-	this->ThetaCMSum_bounds[1] = this->ThetaCMSum+0.5;
-
-	this->PhiCMSep_bounds[0] = this->PhiCMSep-0.5;
-	this->PhiCMSep_bounds[1] = this->PhiCMSep+0.5;
-
-
 }
 
 //IMM Event Analysis Function:
@@ -249,13 +297,13 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Float_t ejectileE
 	Float_t phi2 = radToDeg*atan2(breakup2_4vect.Vect().Y(), breakup2_4vect.Vect().X());
 
 	//perform checks and update case1:
-	case1.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
-	case1.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[0] && vcm2 <= Vcm_bu2_bounds[1]);
-	case1.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
-	case1.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
-	case1.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
-	case1.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
-	case1.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
+	// case1.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
+	// case1.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[0] && vcm2 <= Vcm_bu2_bounds[1]);
+	// case1.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
+	// case1.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
+	// case1.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
+	// case1.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
+	// case1.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
 
 	case1.Vcm1 = vcm1;
 	case1.KEcm1 = kecm1;
@@ -323,13 +371,13 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Float_t ejectileE
 	phi2 = radToDeg*atan2(breakup2_4vect.Vect().Y(),breakup2_4vect.Vect().X());
 
 	//perform checks and update case2:
-	case2.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
-	case2.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[1] && vcm2 <= Vcm_bu2_bounds[1]);
-	case2.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
-	case2.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
-	case2.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
-	case2.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
-	case2.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
+	// case2.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
+	// case2.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[0] && vcm2 <= Vcm_bu2_bounds[1]);
+	// case2.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
+	// case2.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
+	// case2.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
+	// case2.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
+	// case2.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
 
 	case2.Vcm1 = vcm1;
 	case2.KEcm1 = kecm1;
@@ -403,13 +451,13 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Float_t ejectileE
 	Float_t phi2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
 	//perform checks and update case1:
-	case1.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
-	case1.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[1] && vcm2 <= Vcm_bu2_bounds[1]);
-	case1.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
-	case1.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
-	case1.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
-	case1.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
-	case1.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
+	// case1.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
+	// case1.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[1] && vcm2 <= Vcm_bu2_bounds[1]);
+	// case1.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
+	// case1.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
+	// case1.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
+	// case1.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
+	// case1.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
 
 	case1.Vcm1 = vcm1;
 	case1.KEcm1 = kecm1;
@@ -472,13 +520,13 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Float_t ejectileE
 	phi2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
 	//perform checks and update case1:
-	case2.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
-	case2.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[1] && vcm2 <= Vcm_bu2_bounds[1]);
-	case2.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
-	case2.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
-	case2.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
-	case2.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
-	case2.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
+	// case2.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
+	// case2.Vcm2_check = (vcm2 >= Vcm_bu2_bounds[0] && vcm2 <= Vcm_bu2_bounds[1]);
+	// case2.KEcm1_check = (kecm1 >= KEcm_bu1_bounds[0] && kecm1 <= KEcm_bu1_bounds[1]);
+	// case2.KEcm2_check = (kecm2 >= KEcm_bu2_bounds[0] && kecm2 <= KEcm_bu2_bounds[1]);
+	// case2.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
+	// case2.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
+	// case2.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
 
 	case2.Vcm1 = vcm1;
 	case2.KEcm1 = kecm1;
@@ -497,3 +545,14 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Float_t ejectileE
 	return retval;
 }
 
+Float_t IMMMA_Tool_3::AnalyzeEventCalculateRecoilExE(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi){
+	TLorentzVector beam, target, ejectile, recoil;
+	beam.SetPxPyPzE(0.,0.,sqrt(2*this->beam_energy*this->beam.mass),this->beam_energy+this->beam.mass);
+	target.SetPxPyPzE(0.,0.,0.,this->target.mass);
+	Float_t pej = sqrt(2*ejectileE*this->ejectile.mass);
+	ejectile.SetPxPyPzE(pej*sin(degToRad*ejectileTheta)*cos(degToRad*ejectilePhi), pej*sin(degToRad*ejectileTheta)*sin(degToRad*ejectilePhi), pej*cos(degToRad*ejectileTheta), this->ejectile.mass+ejectileE);
+
+	recoil = beam + target - ejectile;
+
+	return (recoil.M() - this->recoil.mass);
+}

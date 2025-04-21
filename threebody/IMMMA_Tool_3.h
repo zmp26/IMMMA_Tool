@@ -21,15 +21,6 @@ struct Nucleus{
 };
 
 struct CaseResult{
-	//flag results:
-	bool Vcm1_check;
-	bool Vcm2_check;
-	bool KEcm1_check;
-	bool KEcm2_check;
-	bool Ecm_check;
-	bool ThetaCMSum_check;
-	bool PhiCMSep_check;
-
 	//CM constants results
 	Float_t Vcm1;
 	Float_t KEcm1;
@@ -45,21 +36,16 @@ struct CaseResult{
 
 	//note that CM1 == observedCM  for MMM
 	// and that CM2 == missingCM   for MMM
+
+	TString ToString(){
+		return Form("\n\t%f\n\t%f\n\t%f\n\t%f\n\t%f\n\t%f\n\t%f\n\t%f\n\t%f",Vcm1,KEcm1,ThetaCM1,PhiCM1,Vcm2,KEcm2,ThetaCM2,PhiCM2,Ecm);
+	}
 };
 
-struct CaseCheckResult{
-	bool Vcm1_check;
-	bool Vcm2_check;
-	bool KEcm1_check;
-	bool KEcm2_check;
-	bool Ecm_check;
-	bool ThetaCMSum_check;
-	bool PhiCMSep_check;
-};
-
-struct DoubleCaseCheckResult{
-	CaseCheckResult assignment1;//CaseCheckResult for mass assignment 1
-	CaseCheckResult assignment2;//CaseCheckResult for mass assignment 2
+struct CMConstant{
+	Float_t expected;
+	Float_t lower;
+	Float_t upper;
 };
 
 
@@ -81,6 +67,18 @@ class IMMMA_Tool_3{
 
 		void SetBeamEnergy(Float_t energy);
 		void SetRecoilExE(Float_t energy);
+
+		void SetVcm_bu1_bounds(Float_t upper, Float_t lower);
+		void SetVcm_bu2_bounds(Float_t upper, Float_t lower);
+		void SetKEcm_bu1_bounds(Float_t upper, Float_t lower);
+		void SetKEcm_bu2_bounds(Float_t upper, Float_t lower);
+		void SetEcm_bounds(Float_t upper, Float_t lower);
+
+		void SetVcm_bu1_bounds(Float_t sigma);
+		void SetVcm_bu2_bounds(Float_t sigma);
+		void SetKEcm_bu1_bounds(Float_t sigma);
+		void SetKEcm_bu2_bounds(Float_t sigma);
+		void SetEcm_bounds(Float_t sigma);
 
 		//getters
 		Nucleus GetBeamNucleus();
@@ -118,6 +116,19 @@ class IMMMA_Tool_3{
 		//MMM Event analysis function:
 		std::pair<CaseResult,CaseResult> AnalyzeEventMMM(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi, Float_t detectedE, Float_t detectedTheta, Float_t detectedPhi);
 
+		//calculate Excitation energy of recoil from ejectile, beam, target information:
+		Float_t AnalyzeEventCalculateRecoilExE(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi);
+
+		//parsing
+		// std::vector<Nucleus> parseReactionString(const TString& reactionStr);
+
+		//checkers
+		bool CheckInBounds_Vcm_bu1(Float_t test);
+		bool CheckInBounds_Vcm_bu2(Float_t test);
+		bool CheckInBounds_KEcm_bu1(Float_t test);
+		bool CheckInBounds_KEcm_bu2(Float_t test);
+		bool CheckInBounds_Ecm(Float_t test);
+
 	private:
 		//nuclear data
 		Nucleus beam;
@@ -132,26 +143,35 @@ class IMMMA_Tool_3{
 		Float_t recoil_exE;//expected/from literature
 
 		//Breakup CM Constants:
-		Float_t Vcm_bu1;		//constant from reaction
-		Float_t Vcm_bu2;		//constant from reaction
-		Float_t KEcm_bu1;		//constant from reaction
-		Float_t KEcm_bu2;		//constant from reaction
-		Float_t Ecm;			//constant from reaction
+		// Float_t Vcm_bu1;		//constant from reaction
+		// Float_t Vcm_bu2;		//constant from reaction
+		// Float_t KEcm_bu1;		//constant from reaction
+		// Float_t KEcm_bu2;		//constant from reaction
+		// Float_t Ecm;			//constant from reaction
+
+		CMConstant Vcm_bu1;
+		CMConstant Vcm_bu2;
+		CMConstant KEcm_bu1;
+		CMConstant KEcm_bu2;
+		CMConstant Ecm;
 
 		Float_t ThetaCMSum;// = 180.;		//constant from reaction
 		Float_t PhiCMSep;// = 180.;		//constant from reaction
 
 		//Breakup CM Constant Bounds: (bounds for checking if a value passes the check)
-		Float_t Vcm_bu1_bounds[2] = {0.,0.};//{min,max}
-		Float_t Vcm_bu2_bounds[2] = {0.,0.};//{min,max}
-		Float_t KEcm_bu1_bounds[2] = {0.,0.};//{min,max}
-		Float_t KEcm_bu2_bounds[2] = {0.,0.};//{min,max}
-		Float_t Ecm_bounds[2] = {0.,0.};//{min,max}
-		Float_t ThetaCMSum_bounds[2] = {0.,0.};//{min,max}
-		Float_t PhiCMSep_bounds[2] = {0.,0.};//{min,max}
+		// Float_t Vcm_bu1_bounds[2] = {0.,0.};//{min,max}
+		// Float_t Vcm_bu2_bounds[2] = {0.,0.};//{min,max}
+		// Float_t KEcm_bu1_bounds[2] = {0.,0.};//{min,max}
+		// Float_t KEcm_bu2_bounds[2] = {0.,0.};//{min,max}
+		// Float_t Ecm_bounds[2] = {0.,0.};//{min,max}
+		// Float_t ThetaCMSum_bounds[2] = {0.,0.};//{min,max}
+		// Float_t PhiCMSep_bounds[2] = {0.,0.};//{min,max}
 
 		const Float_t degToRad = M_PI/180.;
 		const Float_t radToDeg = 180./M_PI;
+
+		//parsing
+		// Nucleus parseNucleus(const TString& nucleusStr);
 
 };
 
