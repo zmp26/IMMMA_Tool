@@ -10,103 +10,128 @@ using namespace std;
 
 IMMMA_Tool_3::IMMMA_Tool_3(){
 	//default constructor
-	this->ThetaCMSum = 180.;
-	this->PhiCMSep = 180.;
+	ThetaCMSum.expected = 180.;
+	ThetaCMSum.lower = 179.;
+	ThetaCMSum.upper = 181.;
+
+	PhiCMSep.expected = 180.;
+	PhiCMSep.lower = 179.;
+	PhiCMSep.upper = 181.;
 }
 
 //setters
-void IMMMA_Tool_3::SetBeamNucleus(Int_t A, TString sym, Float_t mass){
+void IMMMA_Tool_3::SetBeamNucleus(Int_t A, TString sym, Double_t mass){
 	this->beam.A = A;
 	this->beam.sym = sym;
 	this->beam.mass = mass;
 }
 
-void IMMMA_Tool_3::SetTargetNucleus(Int_t A, TString sym, Float_t mass){
+void IMMMA_Tool_3::SetTargetNucleus(Int_t A, TString sym, Double_t mass){
 	this->target.A = A;
 	this->target.sym = sym;
 	this->target.mass = mass;
 }
 
-void IMMMA_Tool_3::SetEjectileNucleus(Int_t A, TString sym, Float_t mass){
+void IMMMA_Tool_3::SetEjectileNucleus(Int_t A, TString sym, Double_t mass){
 	this->ejectile.A = A;
 	this->ejectile.sym = sym;
 	this->ejectile.mass = mass;
 }
 
-void IMMMA_Tool_3::SetRecoilNucleus(Int_t A, TString sym, Float_t mass){
+void IMMMA_Tool_3::SetRecoilNucleus(Int_t A, TString sym, Double_t mass){
 	this->recoil.A = A;
 	this->recoil.sym = sym;
 	this->recoil.mass = mass;
 }
 
-void IMMMA_Tool_3::SetBreakup1Nucleus(Int_t A, TString sym, Float_t mass){
+void IMMMA_Tool_3::SetBreakup1Nucleus(Int_t A, TString sym, Double_t mass){
 	this->breakup1.A = A;
 	this->breakup1.sym = sym;
 	this->breakup1.mass = mass;
 }
 
-void IMMMA_Tool_3::SetBreakup2Nucleus(Int_t A, TString sym, Float_t mass){
+void IMMMA_Tool_3::SetBreakup2Nucleus(Int_t A, TString sym, Double_t mass){
 	this->breakup2.A = A;
 	this->breakup2.sym = sym;
 	this->breakup2.mass = mass;
 }
 
-void IMMMA_Tool_3::SetBeamEnergy(Float_t energy){
+void IMMMA_Tool_3::SetBeamEnergy(Double_t energy){
 	this->beam_energy = energy;
 }
 
-void IMMMA_Tool_3::SetRecoilExE(Float_t energy){
+void IMMMA_Tool_3::SetRecoilExE(Double_t energy){
 	this->recoil_exE = energy;
 }
 
-void IMMMA_Tool_3::SetVcm_bu1_bounds(Float_t lower, Float_t upper){
+void IMMMA_Tool_3::SetVcm_bu1_bounds(Double_t lower, Double_t upper){
 	this->Vcm_bu1.lower = lower;
 	this->Vcm_bu1.upper = upper;
 }
 
-void IMMMA_Tool_3::SetVcm_bu1_bounds(Float_t sigma){
-	this->Vcm_bu1.lower = this->Vcm_bu1.expected - 2*sigma;
-	this->Vcm_bu1.upper = this->Vcm_bu1.expected + 2*sigma;
+void IMMMA_Tool_3::SetVcm_bu1_bounds(Double_t sigma){
+	this->Vcm_bu1.lower = this->Vcm_bu1.mean - 2*sigma;
+	this->Vcm_bu1.upper = this->Vcm_bu1.mean + 2*sigma;
 }
 
-void IMMMA_Tool_3::SetVcm_bu2_bounds(Float_t lower, Float_t upper){
+void IMMMA_Tool_3::SetVcm_bu2_bounds(Double_t lower, Double_t upper){
 	this->Vcm_bu2.lower = lower;
 	this->Vcm_bu2.upper = upper;
 }
 
-void IMMMA_Tool_3::SetVcm_bu2_bounds(Float_t sigma){
-	this->Vcm_bu2.lower = this->Vcm_bu2.expected - 2*sigma;
-	this->Vcm_bu2.upper = this->Vcm_bu2.expected + 2*sigma;
+void IMMMA_Tool_3::SetVcm_bu2_bounds(Double_t sigma){
+	this->Vcm_bu2.lower = this->Vcm_bu2.mean - 2*sigma;
+	this->Vcm_bu2.upper = this->Vcm_bu2.mean + 2*sigma;
 }
 
-void IMMMA_Tool_3::SetKEcm_bu1_bounds(Float_t lower, Float_t upper){
+void IMMMA_Tool_3::SetKEcm_bu1_bounds(Double_t lower, Double_t upper){
 	this->KEcm_bu1.lower = lower;
 	this->KEcm_bu1.upper = upper;
 }
 
-void IMMMA_Tool_3::SetKEcm_bu1_bounds(Float_t sigma){
-	this->KEcm_bu1.lower = this->KEcm_bu1.expected - 2*sigma;
-	this->KEcm_bu1.upper = this->KEcm_bu1.expected + 2*sigma;
+void IMMMA_Tool_3::SetKEcm_bu1_bounds(Double_t sigma){
+	this->KEcm_bu1.lower = this->KEcm_bu1.mean - 2*sigma;
+	this->KEcm_bu1.upper = this->KEcm_bu1.mean + 2*sigma;
 }
 
-void IMMMA_Tool_3::SetKEcm_bu2_bounds(Float_t lower, Float_t upper){
+void IMMMA_Tool_3::SetKEcm_bu2_bounds(Double_t lower, Double_t upper){
 	this->KEcm_bu2.lower = lower;
 	this->KEcm_bu2.upper = upper;
 }
 
-void IMMMA_Tool_3::SetKEcm_bu2_bounds(Float_t sigma){
-	this->KEcm_bu2.lower = this->KEcm_bu2.expected - 2*sigma;
-	this->KEcm_bu2.upper = this->KEcm_bu2.expected + 2*sigma;
+void IMMMA_Tool_3::SetKEcm_bu2_bounds(Double_t sigma){
+	this->KEcm_bu2.lower = this->KEcm_bu2.mean - 2*sigma;
+	this->KEcm_bu2.upper = this->KEcm_bu2.mean + 2*sigma;
 }
 
-void IMMMA_Tool_3::SetEcm_bounds(Float_t lower, Float_t upper){
+void IMMMA_Tool_3::SetEcm_bounds(Double_t lower, Double_t upper){
 	this->Ecm.lower = lower;
 	this->Ecm.upper = upper;
 }
 
-void IMMMA_Tool_3::SetEcm_bounds(Float_t sigma){
-	this->Ecm.lower = this->Ecm.expected - 2*sigma;
-	this->Ecm.upper = this->Ecm.expected + 2*sigma;
+void IMMMA_Tool_3::SetEcm_bounds(Double_t sigma){
+	this->Ecm.lower = this->Ecm.mean - 2*sigma;
+	this->Ecm.upper = this->Ecm.mean + 2*sigma;
+}
+
+void IMMMA_Tool_3::SetMean_Vcm_bu1(Double_t mean){
+	this->Vcm_bu1.mean = mean;
+}
+
+void IMMMA_Tool_3::SetMean_Vcm_bu2(Double_t mean){
+	this->Vcm_bu2.mean = mean;
+}
+
+void IMMMA_Tool_3::SetMean_KEcm_bu1(Double_t mean){
+	this->KEcm_bu1.mean = mean;
+}
+
+void IMMMA_Tool_3::SetMean_KEcm_bu2(Double_t mean){
+	this->KEcm_bu2.mean = mean;
+}
+
+void IMMMA_Tool_3::SetMean_Ecm(Double_t mean){
+	this->Ecm.mean = mean;
 }
 
 //getters
@@ -135,56 +160,56 @@ Nucleus IMMMA_Tool_3::GetBreakup2Nucleus(){
 	return this->breakup2;
 }
 
-Float_t IMMMA_Tool_3::GetBeamMass(){
+Double_t IMMMA_Tool_3::GetBeamMass(){
 	return this->beam.mass;
 }
 
-Float_t IMMMA_Tool_3::GetTargetMass(){
+Double_t IMMMA_Tool_3::GetTargetMass(){
 	return this->target.mass;
 }
 
-Float_t IMMMA_Tool_3::GetEjectileMass(){
+Double_t IMMMA_Tool_3::GetEjectileMass(){
 	return this->ejectile.mass;
 }
 
-Float_t IMMMA_Tool_3::GetRecoilMass(){
+Double_t IMMMA_Tool_3::GetRecoilMass(){
 	return this->recoil.mass;
 }
 
-Float_t IMMMA_Tool_3::GetBreakup1Mass(){
+Double_t IMMMA_Tool_3::GetBreakup1Mass(){
 	return this->breakup1.mass;
 }
 
-Float_t IMMMA_Tool_3::GetBreakup2Mass(){
+Double_t IMMMA_Tool_3::GetBreakup2Mass(){
 	return this->breakup2.mass;
 }
 
-Float_t IMMMA_Tool_3::GetBeamEnergy(){
+Double_t IMMMA_Tool_3::GetBeamEnergy(){
 	return this->beam_energy;
 }
 
-Float_t IMMMA_Tool_3::GetRecoilExE(){
+Double_t IMMMA_Tool_3::GetRecoilExE(){
 	return this->recoil_exE;
 }
 
-Float_t IMMMA_Tool_3::GetVcm_bu1(){
-	return this->Vcm_bu1.expected;
+CMConstant IMMMA_Tool_3::GetVcm_bu1(){
+	return this->Vcm_bu1;
 }
 
-Float_t IMMMA_Tool_3::GetVcm_bu2(){
-	return this->Vcm_bu2.expected;
+CMConstant IMMMA_Tool_3::GetVcm_bu2(){
+	return this->Vcm_bu2;
 }
 
-Float_t IMMMA_Tool_3::GetKEcm_bu1(){
-	return this->KEcm_bu1.expected;
+CMConstant IMMMA_Tool_3::GetKEcm_bu1(){
+	return this->KEcm_bu1;
 }
 
-Float_t IMMMA_Tool_3::GetKEcm_bu2(){
-	return this->KEcm_bu2.expected;
+CMConstant IMMMA_Tool_3::GetKEcm_bu2(){
+	return this->KEcm_bu2;
 }
 
-Float_t IMMMA_Tool_3::GetEcm(){
-	return this->Ecm.expected;
+CMConstant IMMMA_Tool_3::GetEcm(){
+	return this->Ecm;
 }
 
 TString IMMMA_Tool_3::GetReactionString(){
@@ -196,24 +221,32 @@ TString IMMMA_Tool_3::GetBreakupString(){
 }
 
 //checkers
-bool IMMMA_Tool_3::CheckInBounds_Vcm_bu1(Float_t test){
+bool IMMMA_Tool_3::CheckInBounds_Vcm_bu1(Double_t test){
 	return (this->Vcm_bu1.lower <= test && this->Vcm_bu1.upper >= test);
 }
 
-bool IMMMA_Tool_3::CheckInBounds_Vcm_bu2(Float_t test){
+bool IMMMA_Tool_3::CheckInBounds_Vcm_bu2(Double_t test){
 	return (this->Vcm_bu2.lower <= test && this->Vcm_bu2.upper >= test);
 }
 
-bool IMMMA_Tool_3::CheckInBounds_KEcm_bu1(Float_t test){
+bool IMMMA_Tool_3::CheckInBounds_KEcm_bu1(Double_t test){
 	return (this->KEcm_bu1.lower <= test && this->KEcm_bu1.upper >= test);
 }
 
-bool IMMMA_Tool_3::CheckInBounds_KEcm_bu2(Float_t test){
+bool IMMMA_Tool_3::CheckInBounds_KEcm_bu2(Double_t test){
 	return (this->KEcm_bu2.lower <= test && this->KEcm_bu2.upper >= test);
 }
 
-bool IMMMA_Tool_3::CheckInBounds_Ecm(Float_t test){
+bool IMMMA_Tool_3::CheckInBounds_Ecm(Double_t test){
 	return (this->Ecm.lower <= test && this->Ecm.upper >= test);
+}
+
+bool IMMMA_Tool_3::CheckInBounds_ThetaCMSum(Double_t test){
+	return (this->ThetaCMSum.lower <= test && this->ThetaCMSum.upper >= test);
+}
+
+bool IMMMA_Tool_3::CheckInBounds_PhiCMSep(Double_t test){
+	return (this->PhiCMSep.lower <= test && this->PhiCMSep.upper >= test);
 }
 
 //init reaction function
@@ -222,11 +255,18 @@ void IMMMA_Tool_3::CalculateCMConstants(){
 		this->Ecm.expected = this->recoil.mass + this->recoil_exE - this->breakup1.mass - this->breakup2.mass;
 		this->Vcm_bu1.expected = sqrt(2*this->breakup2.mass*this->Ecm.expected/(this->breakup1.mass*(this->breakup1.mass + this->breakup2.mass)));
 		this->Vcm_bu2.expected = sqrt(2*this->breakup1.mass*this->Ecm.expected/(this->breakup2.mass*(this->breakup1.mass + this->breakup2.mass)));
-		this->KEcm_bu1.expected = 0.5*this->breakup1.mass*GetVcm_bu1()*GetVcm_bu1();
-		this->KEcm_bu2.expected = 0.5*this->breakup2.mass*GetVcm_bu2()*GetVcm_bu2();
+		this->KEcm_bu1.expected = 0.5*this->breakup1.mass*this->Vcm_bu1.expected*this->Vcm_bu1.expected;
+		this->KEcm_bu2.expected = 0.5*this->breakup2.mass*this->Vcm_bu2.expected*this->Vcm_bu2.expected;
 
 		this->reaction = Form("%d%s(%d%s,%d%s)%d%s",this->target.A,this->target.sym.Data(),this->beam.A,this->beam.sym.Data(),this->ejectile.A,this->ejectile.sym.Data(),this->recoil.A,this->recoil.sym.Data());
 		this->breakup = Form("%d%s ---> %d%s + %d%s",this->recoil.A,this->recoil.sym.Data(),this->breakup1.A,this->breakup1.sym.Data(),this->breakup2.A,this->breakup2.sym.Data());
+
+		//set means to expected -> these can be updated by the user in their macro by calling IMMMA_Tool_3::SetMean_Vcm_bu1(), etc...
+		this->Ecm.mean = this->Ecm.expected;
+		this->Vcm_bu1.mean = this->Vcm_bu1.expected;
+		this->Vcm_bu2.mean = this->Vcm_bu2.expected;
+		this->KEcm_bu1.mean = this->KEcm_bu1.expected;
+		this->KEcm_bu2.mean = this->KEcm_bu2.expected;
 	} else {
 		this->Ecm.expected = -666;
 		this->Vcm_bu1.expected = -666;
@@ -236,11 +276,18 @@ void IMMMA_Tool_3::CalculateCMConstants(){
 
 		this->reaction = "null";
 		this->breakup = "null";
+
+		//set means to expected -> these can be updated by the user in their macro by calling IMMMA_Tool_3::SetMean_Vcm_bu1(), etc...
+		this->Ecm.mean = this->Ecm.expected;
+		this->Vcm_bu1.mean = this->Vcm_bu1.expected;
+		this->Vcm_bu2.mean = this->Vcm_bu2.expected;
+		this->KEcm_bu1.mean = this->KEcm_bu1.expected;
+		this->KEcm_bu2.mean = this->KEcm_bu2.expected;
 	}
 }
 
 //IMM Event Analysis Function:
-std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi, Float_t detected1E, Float_t detected1Theta, Float_t detected1Phi, Float_t detected2E, Float_t detected2Theta, Float_t detected2Phi){
+std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi, Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi, Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi){
 	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, breakup1_4vect, breakup2_4vect;
 	CaseResult case1, case2;
 
@@ -251,12 +298,12 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Float_t ejectileE
 	//Case 1 is the case in which detected1 uses mass information from breakup1
 	//			              and detected2 uses mass information from breakup2
 
-	Float_t plab_detected1 = sqrt(2*detected1E*this->breakup1.mass);
-	Float_t plab_detected2 = sqrt(2*detected2E*this->breakup2.mass);
+	Double_t plab_detected1 = sqrt(2*detected1E*this->breakup1.mass);
+	Double_t plab_detected2 = sqrt(2*detected2E*this->breakup2.mass);
 
-	Float_t plab_ej = sqrt(2*ejectileE*this->ejectile.mass);
-	Float_t plab_beam = sqrt(2*this->beam_energy*this->beam.mass);
-	Float_t plab_target = 0.;
+	Double_t plab_ej = sqrt(2*ejectileE*this->ejectile.mass);
+	Double_t plab_beam = sqrt(2*this->beam_energy*this->beam.mass);
+	Double_t plab_target = 0.;
 
 	//initialize the 4vectors from this information:
 	beam_4vect.SetPxPyPzE(0.,0.,plab_beam,this->beam.mass+this->beam_energy);
@@ -269,10 +316,10 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Float_t ejectileE
 	recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
 
 	//calculate the excitation energy of the recoil:
-	Float_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;//this excess energy is entirely due to excitation!
+	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;//this excess energy is entirely due to excitation!
 
 	//calculate breakup angle in the lab:
-	Float_t breakupAngleLab = radToDeg*acos(breakup1_4vect.Vect().Dot(breakup2_4vect.Vect())/(breakup1_4vect.Vect().Mag()*breakup2_4vect.Vect().Mag()));
+	Double_t breakupAngleLab = radToDeg*acos(breakup1_4vect.Vect().Dot(breakup2_4vect.Vect())/(breakup1_4vect.Vect().Mag()*breakup2_4vect.Vect().Mag()));
 
 	//obtain the boost vector to boost into the breakup CM frame:
 	TVector3 boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
@@ -282,19 +329,19 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Float_t ejectileE
 	breakup2_4vect.Boost(boostvector);
 
 	//calculate CM variables from the boosted momenta:
-	Float_t vcm1 = ((1/breakup1_4vect.Energy())*breakup1_4vect.Vect()).Mag();
-	Float_t vcm2 = ((1/breakup2_4vect.Energy())*breakup2_4vect.Vect()).Mag();
+	Double_t vcm1 = ((1/breakup1_4vect.Energy())*breakup1_4vect.Vect()).Mag();
+	Double_t vcm2 = ((1/breakup2_4vect.Energy())*breakup2_4vect.Vect()).Mag();
 
-	Float_t kecm1 = 0.5*this->breakup1.mass*vcm1*vcm1;
-	Float_t kecm2 = 0.5*this->breakup2.mass*vcm2*vcm2;
+	Double_t kecm1 = 0.5*this->breakup1.mass*vcm1*vcm1;
+	Double_t kecm2 = 0.5*this->breakup2.mass*vcm2*vcm2;
 
-	Float_t ecm = kecm1 + kecm2;
+	Double_t ecm = kecm1 + kecm2;
 
-	Float_t theta1 = radToDeg*acos(breakup1_4vect.Vect().Z()/breakup1_4vect.Vect().Mag());
-	Float_t phi1 = radToDeg*atan2(breakup1_4vect.Vect().Y(),breakup1_4vect.Vect().X());
+	Double_t theta1 = radToDeg*acos(breakup1_4vect.Vect().Z()/breakup1_4vect.Vect().Mag());
+	Double_t phi1 = radToDeg*atan2(breakup1_4vect.Vect().Y(),breakup1_4vect.Vect().X());
 
-	Float_t theta2 = radToDeg*acos(breakup2_4vect.Vect().Z()/breakup2_4vect.Vect().Mag());
-	Float_t phi2 = radToDeg*atan2(breakup2_4vect.Vect().Y(), breakup2_4vect.Vect().X());
+	Double_t theta2 = radToDeg*acos(breakup2_4vect.Vect().Z()/breakup2_4vect.Vect().Mag());
+	Double_t phi2 = radToDeg*atan2(breakup2_4vect.Vect().Y(), breakup2_4vect.Vect().X());
 
 	//perform checks and update case1:
 	// case1.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
@@ -397,7 +444,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Float_t ejectileE
 	return retval;
 }
 
-std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi, Float_t detectedE, Float_t detectedTheta, Float_t detectedPhi){
+std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi, Double_t detectedE, Double_t detectedTheta, Double_t detectedPhi){
 	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, observed_4vect, missing_4vect;
 	CaseResult case1, case2;
 
@@ -406,18 +453,18 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Float_t ejectileE
 	 *******************************************************/
 	//assume the mass is breakup1.mass
 
-	Float_t mass_observed = this->breakup1.mass;
-	Float_t Elab_observed = detectedE;
-	Float_t Thetalab_observed = detectedTheta;
-	Float_t Philab_observed = detectedPhi;
+	Double_t mass_observed = this->breakup1.mass;
+	Double_t Elab_observed = detectedE;
+	Double_t Thetalab_observed = detectedTheta;
+	Double_t Philab_observed = detectedPhi;
 
-	Float_t mass_missing = this->breakup2.mass;
+	Double_t mass_missing = this->breakup2.mass;
 
 
-	Float_t plab_observed = sqrt(2*Elab_observed*mass_observed);
-	Float_t plab_ej = sqrt(2*ejectileE*this->ejectile.mass);
-	Float_t plab_beam = sqrt(2*this->beam_energy*this->beam.mass);
-	Float_t plab_target = 0.;
+	Double_t plab_observed = sqrt(2*Elab_observed*mass_observed);
+	Double_t plab_ej = sqrt(2*ejectileE*this->ejectile.mass);
+	Double_t plab_beam = sqrt(2*this->beam_energy*this->beam.mass);
+	Double_t plab_target = 0.;
 
 	beam_4vect.SetPxPyPzE(0.,0.,plab_beam,this->beam.mass+this->beam_energy);
 	target_4vect.SetPxPyPzE(0.,0.,0.,this->target.mass);
@@ -428,27 +475,27 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Float_t ejectileE
 	missing_4vect = recoil_4vect - observed_4vect;
 	TVector3 boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 
-	Float_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
+	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
-	Float_t breakupAngleLab = radToDeg*acos(observed_4vect.Vect().Dot(missing_4vect.Vect())/(observed_4vect.Vect().Mag()*missing_4vect.Vect().Mag()));
+	Double_t breakupAngleLab = radToDeg*acos(observed_4vect.Vect().Dot(missing_4vect.Vect())/(observed_4vect.Vect().Mag()*missing_4vect.Vect().Mag()));
 
 	//boost into CM frame
 	missing_4vect.Boost(boostvector);
 	observed_4vect.Boost(boostvector);
 
-	Float_t vcm1 = ((1/observed_4vect.Energy())*observed_4vect.Vect()).Mag();
-	Float_t vcm2 = ((1/missing_4vect.Energy())*missing_4vect.Vect()).Mag();
+	Double_t vcm1 = ((1/observed_4vect.Energy())*observed_4vect.Vect()).Mag();
+	Double_t vcm2 = ((1/missing_4vect.Energy())*missing_4vect.Vect()).Mag();
 
-	Float_t kecm1 = 0.5*mass_observed*vcm1*vcm1;
-	Float_t kecm2 = 0.5*mass_missing*vcm2*vcm2;
+	Double_t kecm1 = 0.5*mass_observed*vcm1*vcm1;
+	Double_t kecm2 = 0.5*mass_missing*vcm2*vcm2;
 
-	Float_t ecm = kecm1+kecm2;
+	Double_t ecm = kecm1+kecm2;
 
-	Float_t theta1 = radToDeg*acos(observed_4vect.Vect().Z()/observed_4vect.Vect().Mag());
-	Float_t theta2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
+	Double_t theta1 = radToDeg*acos(observed_4vect.Vect().Z()/observed_4vect.Vect().Mag());
+	Double_t theta2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
 
-	Float_t phi1 = radToDeg*atan2(observed_4vect.Vect().Y(),observed_4vect.Vect().X());
-	Float_t phi2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
+	Double_t phi1 = radToDeg*atan2(observed_4vect.Vect().Y(),observed_4vect.Vect().X());
+	Double_t phi2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
 	//perform checks and update case1:
 	// case1.Vcm1_check = (vcm1 >= Vcm_bu1_bounds[0] && vcm1 <= Vcm_bu1_bounds[1]);
@@ -545,11 +592,11 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Float_t ejectileE
 	return retval;
 }
 
-Float_t IMMMA_Tool_3::AnalyzeEventCalculateRecoilExE(Float_t ejectileE, Float_t ejectileTheta, Float_t ejectilePhi){
+Double_t IMMMA_Tool_3::AnalyzeEventCalculateRecoilExE(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi){
 	TLorentzVector beam, target, ejectile, recoil;
 	beam.SetPxPyPzE(0.,0.,sqrt(2*this->beam_energy*this->beam.mass),this->beam_energy+this->beam.mass);
 	target.SetPxPyPzE(0.,0.,0.,this->target.mass);
-	Float_t pej = sqrt(2*ejectileE*this->ejectile.mass);
+	Double_t pej = sqrt(2*ejectileE*this->ejectile.mass);
 	ejectile.SetPxPyPzE(pej*sin(degToRad*ejectileTheta)*cos(degToRad*ejectilePhi), pej*sin(degToRad*ejectileTheta)*sin(degToRad*ejectilePhi), pej*cos(degToRad*ejectileTheta), this->ejectile.mass+ejectileE);
 
 	recoil = beam + target - ejectile;
