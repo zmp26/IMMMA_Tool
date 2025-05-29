@@ -26,13 +26,19 @@ struct CaseResult{
 	Double_t KEcm1;
 	Double_t ThetaCM1;
 	Double_t PhiCM1;
+	Double_t ThetaLab1;
+	Double_t PhiLab1;
 
 	Double_t Vcm2;
 	Double_t KEcm2;
 	Double_t ThetaCM2;
 	Double_t PhiCM2;
+	Double_t ThetaLab2;
+	Double_t PhiLab2;
 
 	Double_t Ecm;
+
+	Double_t recoilExE;
 
 	//note that CM1 == observedCM  for MMM
 	// and that CM2 == missingCM   for MMM
@@ -75,6 +81,12 @@ class IMMMA_Tool_3{
 		void SetKEcm_bu2_bounds(Double_t upper, Double_t lower);
 		void SetEcm_bounds(Double_t upper, Double_t lower);
 
+		void SetVcm_bu1_boundsp(Double_t upperp, Double_t lowerp);
+		void SetVcm_bu2_boundsp(Double_t upperp, Double_t lowerp);
+		void SetKEcm_bu1_boundsp(Double_t upperp, Double_t lowerp);
+		void SetKEcm_bu2_boundsp(Double_t upperp, Double_t lowerp);
+		void SetEcm_boundsp(Double_t upperp, Double_t lowerp);
+
 		void SetVcm_bu1_bounds(Double_t sigma);
 		void SetVcm_bu2_bounds(Double_t sigma);
 		void SetKEcm_bu1_bounds(Double_t sigma);
@@ -86,6 +98,13 @@ class IMMMA_Tool_3{
 		void SetMean_KEcm_bu1(Double_t mean);
 		void SetMean_KEcm_bu2(Double_t mean);
 		void SetMean_Ecm(Double_t mean);
+
+		void SetMeanToExpected_Vcm_bu1();
+		void SetMeanToExpected_Vcm_bu2();
+		void SetMeanToExpected_KEcm_bu1();
+		void SetMeanToExpected_KEcm_bu2();
+		void SetMeanToExpected_Ecm();
+		void SetMeanToExpected_All();
 
 		//getters
 		Nucleus GetBeamNucleus();
@@ -104,6 +123,12 @@ class IMMMA_Tool_3{
 
 		Double_t GetBeamEnergy();
 		Double_t GetRecoilExE();
+
+		Double_t GetExpectedVcm_bu1();
+		Double_t GetExpectedVcm_bu2();
+		Double_t GetExpectedKEcm_bu1();
+		Double_t GetExpectedKEcm_bu2();
+		Double_t GetExpectedEcm();
 
 		CMConstant GetVcm_bu1();
 		CMConstant GetVcm_bu2();

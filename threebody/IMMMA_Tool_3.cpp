@@ -74,6 +74,11 @@ void IMMMA_Tool_3::SetVcm_bu1_bounds(Double_t sigma){
 	this->Vcm_bu1.upper = this->Vcm_bu1.mean + 2*sigma;
 }
 
+void IMMMA_Tool_3::SetVcm_bu1_boundsp(Double_t lowerp, Double_t upperp){
+	this->Vcm_bu1.lower = this->Vcm_bu1.mean*lowerp;
+	this->Vcm_bu1.upper = this->Vcm_bu1.mean*upperp;
+}
+
 void IMMMA_Tool_3::SetVcm_bu2_bounds(Double_t lower, Double_t upper){
 	this->Vcm_bu2.lower = lower;
 	this->Vcm_bu2.upper = upper;
@@ -82,6 +87,11 @@ void IMMMA_Tool_3::SetVcm_bu2_bounds(Double_t lower, Double_t upper){
 void IMMMA_Tool_3::SetVcm_bu2_bounds(Double_t sigma){
 	this->Vcm_bu2.lower = this->Vcm_bu2.mean - 2*sigma;
 	this->Vcm_bu2.upper = this->Vcm_bu2.mean + 2*sigma;
+}
+
+void IMMMA_Tool_3::SetVcm_bu2_boundsp(Double_t lowerp, Double_t upperp){
+	this->Vcm_bu2.lower = this->Vcm_bu2.mean*lowerp;
+	this->Vcm_bu2.upper = this->Vcm_bu2.mean*upperp;
 }
 
 void IMMMA_Tool_3::SetKEcm_bu1_bounds(Double_t lower, Double_t upper){
@@ -94,6 +104,11 @@ void IMMMA_Tool_3::SetKEcm_bu1_bounds(Double_t sigma){
 	this->KEcm_bu1.upper = this->KEcm_bu1.mean + 2*sigma;
 }
 
+void IMMMA_Tool_3::SetKEcm_bu1_boundsp(Double_t lowerp, Double_t upperp){
+	this->KEcm_bu1.lower = this->KEcm_bu1.mean*lowerp;
+	this->KEcm_bu1.upper = this->KEcm_bu1.mean*upperp;
+}
+
 void IMMMA_Tool_3::SetKEcm_bu2_bounds(Double_t lower, Double_t upper){
 	this->KEcm_bu2.lower = lower;
 	this->KEcm_bu2.upper = upper;
@@ -104,6 +119,11 @@ void IMMMA_Tool_3::SetKEcm_bu2_bounds(Double_t sigma){
 	this->KEcm_bu2.upper = this->KEcm_bu2.mean + 2*sigma;
 }
 
+void IMMMA_Tool_3::SetKEcm_bu2_boundsp(Double_t lowerp, Double_t upperp){
+	this->KEcm_bu2.lower = this->KEcm_bu2.mean*lowerp;
+	this->KEcm_bu2.upper = this->KEcm_bu2.mean*upperp;
+}
+
 void IMMMA_Tool_3::SetEcm_bounds(Double_t lower, Double_t upper){
 	this->Ecm.lower = lower;
 	this->Ecm.upper = upper;
@@ -112,6 +132,11 @@ void IMMMA_Tool_3::SetEcm_bounds(Double_t lower, Double_t upper){
 void IMMMA_Tool_3::SetEcm_bounds(Double_t sigma){
 	this->Ecm.lower = this->Ecm.mean - 2*sigma;
 	this->Ecm.upper = this->Ecm.mean + 2*sigma;
+}
+
+void IMMMA_Tool_3::SetEcm_boundsp(Double_t lowerp, Double_t upperp){
+	this->Ecm.lower = this->Ecm.mean*lowerp;
+	this->Ecm.upper = this->Ecm.mean*upperp;
 }
 
 void IMMMA_Tool_3::SetMean_Vcm_bu1(Double_t mean){
@@ -132,6 +157,34 @@ void IMMMA_Tool_3::SetMean_KEcm_bu2(Double_t mean){
 
 void IMMMA_Tool_3::SetMean_Ecm(Double_t mean){
 	this->Ecm.mean = mean;
+}
+
+void IMMMA_Tool_3::SetMeanToExpected_Vcm_bu1(){
+	this->Vcm_bu1.mean = this->Vcm_bu1.expected;
+}
+
+void IMMMA_Tool_3::SetMeanToExpected_Vcm_bu2(){
+	this->Vcm_bu2.mean = this->Vcm_bu2.expected;
+}
+
+void IMMMA_Tool_3::SetMeanToExpected_KEcm_bu1(){
+	this->KEcm_bu1.mean = this->KEcm_bu1.expected;
+}
+
+void IMMMA_Tool_3::SetMeanToExpected_KEcm_bu2(){
+	this->KEcm_bu2.mean = this->KEcm_bu2.expected;
+}
+
+void IMMMA_Tool_3::SetMeanToExpected_Ecm(){
+	this->Ecm.mean = this->Ecm.expected;
+}
+
+void IMMMA_Tool_3::SetMeanToExpected_All(){
+	this->SetMeanToExpected_Vcm_bu1();
+	this->SetMeanToExpected_Vcm_bu2();
+	this->SetMeanToExpected_KEcm_bu1();
+	this->SetMeanToExpected_KEcm_bu2();
+	this->SetMeanToExpected_Ecm();
 }
 
 //getters
@@ -190,6 +243,26 @@ Double_t IMMMA_Tool_3::GetBeamEnergy(){
 
 Double_t IMMMA_Tool_3::GetRecoilExE(){
 	return this->recoil_exE;
+}
+
+Double_t IMMMA_Tool_3::GetExpectedVcm_bu1(){
+	return this->Vcm_bu1.expected;
+}
+
+Double_t IMMMA_Tool_3::GetExpectedVcm_bu2(){
+	return this->Vcm_bu2.expected;
+}
+
+Double_t IMMMA_Tool_3::GetExpectedKEcm_bu1(){
+	return this->KEcm_bu1.expected;
+}
+
+Double_t IMMMA_Tool_3::GetExpectedKEcm_bu2(){
+	return this->KEcm_bu2.expected;
+}
+
+Double_t IMMMA_Tool_3::GetExpectedEcm(){
+	return this->Ecm.expected;
 }
 
 CMConstant IMMMA_Tool_3::GetVcm_bu1(){
@@ -321,6 +394,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	//calculate breakup angle in the lab:
 	Double_t breakupAngleLab = radToDeg*acos(breakup1_4vect.Vect().Dot(breakup2_4vect.Vect())/(breakup1_4vect.Vect().Mag()*breakup2_4vect.Vect().Mag()));
 
+	Double_t thetalab2 = radToDeg*acos(breakup2_4vect.Vect().Z()/breakup2_4vect.Vect().Mag());
+	Double_t philab2 = radToDeg*atan2(breakup2_4vect.Vect().Y(),breakup2_4vect.Vect().X());
+
 	//obtain the boost vector to boost into the breakup CM frame:
 	TVector3 boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 
@@ -361,8 +437,12 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case1.KEcm2 = kecm2;
 	case1.ThetaCM2 = theta2;
 	case1.PhiCM2 = phi2;
+	case1.ThetaLab2 = thetalab2;
+	case1.PhiLab2 = philab2;
 
 	case1.Ecm = ecm;
+
+	case1.recoilExE = recoil_ExcessEnergy;
 
 	//now we can move on to case 2
 	/*******************************************************
@@ -394,6 +474,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 
 	//calculate breakup angle in the lab:
 	breakupAngleLab = radToDeg*acos(breakup1_4vect.Vect().Dot(breakup2_4vect.Vect())/(breakup1_4vect.Vect().Mag()*breakup2_4vect.Vect().Mag()));
+
+	thetalab2 = radToDeg*acos(breakup2_4vect.Vect().Z()/breakup2_4vect.Vect().Mag());
+	philab2 = radToDeg*atan2(breakup2_4vect.Vect().Y(),breakup2_4vect.Vect().X());
 
 	//obtain the boost vector to boost into the breakup CM frame:
 	boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
@@ -435,15 +518,19 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case2.KEcm2 = kecm2;
 	case2.ThetaCM2 = theta2;
 	case2.PhiCM2 = phi2;
+	case2.ThetaLab2 = thetalab2;
+	case2.PhiLab2 = philab2;
 
 	case2.Ecm = ecm;
 
+	case2.recoilExE = recoil_ExcessEnergy;
 
 	//return a std::pair<CaseResult,CaseResult>
 	std::pair<CaseResult,CaseResult> retval = std::make_pair(case1,case2);
 	return retval;
 }
 
+//MMM Event Analysis Function:
 std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi, Double_t detectedE, Double_t detectedTheta, Double_t detectedPhi){
 	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, observed_4vect, missing_4vect;
 	CaseResult case1, case2;
@@ -478,6 +565,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	Double_t breakupAngleLab = radToDeg*acos(observed_4vect.Vect().Dot(missing_4vect.Vect())/(observed_4vect.Vect().Mag()*missing_4vect.Vect().Mag()));
+
+	Double_t thetalab2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
+	Double_t philab2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
 	//boost into CM frame
 	missing_4vect.Boost(boostvector);
@@ -515,8 +605,12 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case1.KEcm2 = kecm2;
 	case1.ThetaCM2 = theta2;
 	case1.PhiCM2 = phi2;
+	case1.ThetaLab2 = thetalab2;
+	case1.PhiLab2 = philab2;
 
 	case1.Ecm = ecm;
+
+	case1.recoilExE = recoil_ExcessEnergy;
 
 	/*******************************************************
 	 *					  CASE II BELOW:				   *
@@ -547,6 +641,12 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	breakupAngleLab = radToDeg*acos(observed_4vect.Vect().Dot(missing_4vect.Vect())/(observed_4vect.Vect().Mag()*missing_4vect.Vect().Mag()));
+
+	thetalab2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
+	philab2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
+
+	thetalab2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
+	philab2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
 	//boost into CM frame
 	missing_4vect.Boost(boostvector);
@@ -584,8 +684,12 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case2.KEcm2 = kecm2;
 	case2.ThetaCM2 = theta2;
 	case2.PhiCM2 = phi2;
+	case2.ThetaLab2 = thetalab2;
+	case2.PhiLab2 = philab2;
 
 	case2.Ecm = ecm;
+
+	case2.recoilExE = recoil_ExcessEnergy;
 
 	
 	std::pair<CaseResult,CaseResult> retval = std::make_pair(case1,case2);
