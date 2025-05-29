@@ -444,6 +444,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 
 	case1.recoilExE = recoil_ExcessEnergy;
 
+	case1.recInvMass = recoil_4vect.M();
+
 	//now we can move on to case 2
 	/*******************************************************
 	 *					  CASE II BELOW:				   *
@@ -524,6 +526,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case2.Ecm = ecm;
 
 	case2.recoilExE = recoil_ExcessEnergy;
+
+	case2.recInvMass = recoil_4vect.M();
 
 	//return a std::pair<CaseResult,CaseResult>
 	std::pair<CaseResult,CaseResult> retval = std::make_pair(case1,case2);
@@ -612,6 +616,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 
 	case1.recoilExE = recoil_ExcessEnergy;
 
+	case1.recInvMass = recoil_4vect.M();
+
 	/*******************************************************
 	 *					  CASE II BELOW:				   *
 	 *******************************************************/
@@ -690,6 +696,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case2.Ecm = ecm;
 
 	case2.recoilExE = recoil_ExcessEnergy;
+
+	case2.recInvMass = recoil_4vect.M();
 
 	
 	std::pair<CaseResult,CaseResult> retval = std::make_pair(case1,case2);

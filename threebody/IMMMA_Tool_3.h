@@ -36,6 +36,10 @@ struct CaseResult{
 	Double_t ThetaLab2;
 	Double_t PhiLab2;
 
+
+	//add recoil invariant mass calculation:
+	Double_t recInvMass;
+
 	Double_t Ecm;
 
 	Double_t recoilExE;
