@@ -402,6 +402,10 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	//obtain the boost vector to boost into the breakup CM frame:
 	TVector3 boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 
+	//calculate the angle between the break up particles in the lab and the CM velocity vector (-boostvector)
+	Double_t breakup1_VcmAngle = breakup1_4vect.Vect().Angle(-boostvector);
+	Double_t breakup2_VcmAngle = breakup2_4vect.Vect().Angle(-boostvector);
+
 	//boost breakup1_4vect and breakup2_4vect into the CM frame:
 	breakup1_4vect.Boost(boostvector);
 	breakup2_4vect.Boost(boostvector);
@@ -439,6 +443,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case1.ELab1 = detected1E;
 	case1.ThetaLab1 = detected1Theta;
 	case1.PhiLab1 = detected1Phi;
+	case1.breakup1_VcmAngle = breakup1_VcmAngle;
 
 	case1.Vcm2 = vcm2;
 	case1.KEcm2 = kecm2;
@@ -447,6 +452,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case1.ELab2 = detected2E;
 	case1.ThetaLab2 = detected2Theta;
 	case1.PhiLab2 = philab2;
+	case1.breakup2_VcmAngle = breakup2_VcmAngle;
 
 
 	case1.Ecm = ecm;
@@ -497,6 +503,10 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	//obtain the boost vector to boost into the breakup CM frame:
 	boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 
+	//calculate the angle between the break up particles in the lab and the CM velocity vector (-boostvector)
+	breakup1_VcmAngle = breakup1_4vect.Vect().Angle(-boostvector);
+	breakup2_VcmAngle = breakup2_4vect.Vect().Angle(-boostvector);
+
 	//boost breakup1_4vect and breakup2_4vect into CM frame:
 	breakup1_4vect.Boost(boostvector);
 	breakup2_4vect.Boost(boostvector);
@@ -534,6 +544,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case2.ELab1 = detected1E;
 	case2.ThetaLab1 = detected1Theta;
 	case2.PhiLab1 = detected1Phi;
+	case2.breakup1_VcmAngle = breakup1_VcmAngle;
 
 	case2.Vcm2 = vcm2;
 	case2.KEcm2 = kecm2;
@@ -542,6 +553,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case2.ELab2 = detected2E;
 	case2.ThetaLab2 = thetalab2;
 	case2.PhiLab2 = philab2;
+	case2.breakup2_VcmAngle = breakup2_VcmAngle;
 
 	case2.Ecm = ecm;
 
@@ -589,6 +601,11 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	missing_4vect = recoil_4vect - observed_4vect;
 	TVector3 boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 
+	//calculate the angle between the break up particles in the lab and the CM velocity vector (-boostvector)
+	Double_t observed_VcmAngle = observed_4vect.Vect().Angle(-boostvector);
+	Double_t missing_VcmAngle = missing_4vect.Vect().Angle(-boostvector);
+
+
 	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	Double_t breakupAngleLab = radToDeg*acos(observed_4vect.Vect().Dot(missing_4vect.Vect())/(observed_4vect.Vect().Mag()*missing_4vect.Vect().Mag()));
@@ -633,6 +650,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case1.ELab1 = detectedE;
 	case1.ThetaLab1 = detectedTheta;
 	case1.PhiLab1 = detectedPhi;
+	case1.breakup1_VcmAngle = observed_VcmAngle;
 
 	case1.Vcm2 = vcm2;
 	case1.KEcm2 = kecm2;
@@ -641,6 +659,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case1.ELab2 = elab2;
 	case1.ThetaLab2 = thetalab2;
 	case1.PhiLab2 = philab2;
+	case1.breakup2_VcmAngle = missing_VcmAngle;
 
 	case1.Ecm = ecm;
 
@@ -676,6 +695,10 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
 	missing_4vect = recoil_4vect - observed_4vect;
 	boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
+
+	//calculate the angle between the break up particles in the lab and the CM velocity vector (-boostvector)
+	observed_VcmAngle = observed_4vect.Vect().Angle(-boostvector);
+	missing_VcmAngle = missing_4vect.Vect().Angle(-boostvector);
 
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
@@ -724,6 +747,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case2.ELab1 = detectedE;
 	case2.ThetaLab1 = detectedTheta;
 	case2.PhiLab1 = detectedPhi;
+	case2.breakup1_VcmAngle = observed_VcmAngle;
 
 	case2.Vcm2 = vcm2;
 	case2.KEcm2 = kecm2;
@@ -732,6 +756,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case2.ELab2 = elab2;
 	case2.ThetaLab2 = thetalab2;
 	case2.PhiLab2 = philab2;
+	case2.breakup2_VcmAngle = missing_VcmAngle;
 
 	case2.Ecm = ecm;
 
