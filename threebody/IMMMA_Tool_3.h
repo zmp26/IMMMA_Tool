@@ -21,6 +21,9 @@ struct Nucleus{
 };
 
 struct CaseResult{
+	//boost vector:
+	TVector3 boostvector;
+
 	//CM constants results
 	Double_t Vcm1;
 	Double_t KEcm1;

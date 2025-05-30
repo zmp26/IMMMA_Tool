@@ -430,6 +430,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	// case1.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
 	// case1.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
 
+	case1.boostvector = boostvector;
+
 	case1.Vcm1 = vcm1;
 	case1.KEcm1 = kecm1;
 	case1.ThetaCM1 = theta1;
@@ -522,6 +524,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	// case2.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
 	// case2.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
 	// case2.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
+
+	case2.boostvector = boostvector;
 
 	case2.Vcm1 = vcm1;
 	case2.KEcm1 = kecm1;
@@ -620,6 +624,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	// case1.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
 	// case1.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
 
+	case1.boostvector = boostvector;
+
 	case1.Vcm1 = vcm1;
 	case1.KEcm1 = kecm1;
 	case1.ThetaCM1 = theta1;
@@ -708,6 +714,8 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	// case2.Ecm_check = (ecm >= Ecm_bounds[0] && ecm <= Ecm_bounds[1]);
 	// case2.ThetaCMSum_check = (theta1+theta2 >= ThetaCMSum_bounds[0] && theta1+theta2 <= ThetaCMSum_bounds[1]);
 	// case2.PhiCMSep_check = (abs(phi1-phi2) >= PhiCMSep_bounds[0] && abs(phi1-phi2) <= PhiCMSep_bounds[1]);
+
+	case2.boostvector = boostvector;
 
 	case2.Vcm1 = vcm1;
 	case2.KEcm1 = kecm1;
