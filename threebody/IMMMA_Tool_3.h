@@ -26,6 +26,7 @@ struct CaseResult{
 	Double_t KEcm1;
 	Double_t ThetaCM1;
 	Double_t PhiCM1;
+	Double_t ELab1;
 	Double_t ThetaLab1;
 	Double_t PhiLab1;
 
@@ -33,12 +34,16 @@ struct CaseResult{
 	Double_t KEcm2;
 	Double_t ThetaCM2;
 	Double_t PhiCM2;
+	Double_t ELab2;
 	Double_t ThetaLab2;
 	Double_t PhiLab2;
 
 
 	//add recoil invariant mass calculation:
 	Double_t recInvMass;
+	Double_t ejInvMass;
+	Double_t bu1InvMass;
+	Double_t bu2InvMass;
 
 	Double_t Ecm;
 

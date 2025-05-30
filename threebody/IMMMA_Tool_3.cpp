@@ -386,7 +386,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	breakup2_4vect.SetPxPyPzE(plab_detected2*sin(degToRad*detected2Theta)*cos(degToRad*detected2Phi), plab_detected2*sin(degToRad*detected2Theta)*sin(degToRad*detected2Phi), plab_detected2*cos(degToRad*detected2Theta), this->breakup2.mass+detected2E);
 
 	//reconstruct recoil_4vect from beam, target, and ejectile information:
-	recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
+	//recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
+	//reconstruct recoil 4vect from bu1 and bu2 information:
+	recoil_4vect = breakup1_4vect + breakup2_4vect;
 
 	//calculate the excitation energy of the recoil:
 	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;//this excess energy is entirely due to excitation!
@@ -432,19 +434,27 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case1.KEcm1 = kecm1;
 	case1.ThetaCM1 = theta1;
 	case1.PhiCM1 = phi1;
+	case1.ELab1 = detected1E;
+	case1.ThetaLab1 = detected1Theta;
+	case1.PhiLab1 = detected1Phi;
 
 	case1.Vcm2 = vcm2;
 	case1.KEcm2 = kecm2;
 	case1.ThetaCM2 = theta2;
 	case1.PhiCM2 = phi2;
-	case1.ThetaLab2 = thetalab2;
+	case1.ELab2 = detected2E;
+	case1.ThetaLab2 = detected2Theta;
 	case1.PhiLab2 = philab2;
+
 
 	case1.Ecm = ecm;
 
 	case1.recoilExE = recoil_ExcessEnergy;
 
 	case1.recInvMass = recoil_4vect.M();
+	case1.ejInvMass = ejectile_4vect.M();
+	case1.bu1InvMass = breakup1_4vect.M();
+	case1.bu2InvMass = breakup2_4vect.M();
 
 	//now we can move on to case 2
 	/*******************************************************
@@ -469,7 +479,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	breakup2_4vect.SetPxPyPzE(plab_detected2*sin(degToRad*detected2Theta)*cos(degToRad*detected2Phi), plab_detected2*sin(degToRad*detected2Theta)*sin(degToRad*detected2Phi), plab_detected2*cos(degToRad*detected2Theta), this->breakup1.mass+detected2E);
 
 	//reconstruct recoil_4vect from beam, target, and ejectile information:
-	recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
+	//recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
+	//reconstruct recoil 4vect from bu1 and bu2 information:
+	recoil_4vect = breakup1_4vect + breakup2_4vect;
 
 	//calculate the excitation energy of the recoil:
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
@@ -515,11 +527,15 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case2.KEcm1 = kecm1;
 	case2.ThetaCM1 = theta1;
 	case2.PhiCM1 = phi1;
+	case2.ELab1 = detected1E;
+	case2.ThetaLab1 = detected1Theta;
+	case2.PhiLab1 = detected1Phi;
 
 	case2.Vcm2 = vcm2;
 	case2.KEcm2 = kecm2;
 	case2.ThetaCM2 = theta2;
 	case2.PhiCM2 = phi2;
+	case2.ELab2 = detected2E;
 	case2.ThetaLab2 = thetalab2;
 	case2.PhiLab2 = philab2;
 
@@ -528,6 +544,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	case2.recoilExE = recoil_ExcessEnergy;
 
 	case2.recInvMass = recoil_4vect.M();
+	case2.ejInvMass = ejectile_4vect.M();
+	case2.bu1InvMass = breakup1_4vect.M();
+	case2.bu2InvMass = breakup2_4vect.M();
 
 	//return a std::pair<CaseResult,CaseResult>
 	std::pair<CaseResult,CaseResult> retval = std::make_pair(case1,case2);
@@ -570,6 +589,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 
 	Double_t breakupAngleLab = radToDeg*acos(observed_4vect.Vect().Dot(missing_4vect.Vect())/(observed_4vect.Vect().Mag()*missing_4vect.Vect().Mag()));
 
+	Double_t elab2 = missing_4vect.E() - missing_4vect.M();
 	Double_t thetalab2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
 	Double_t philab2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
@@ -604,11 +624,15 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case1.KEcm1 = kecm1;
 	case1.ThetaCM1 = theta1;
 	case1.PhiCM1 = phi1;
+	case1.ELab1 = detectedE;
+	case1.ThetaLab1 = detectedTheta;
+	case1.PhiLab1 = detectedPhi;
 
 	case1.Vcm2 = vcm2;
 	case1.KEcm2 = kecm2;
 	case1.ThetaCM2 = theta2;
 	case1.PhiCM2 = phi2;
+	case1.ELab2 = elab2;
 	case1.ThetaLab2 = thetalab2;
 	case1.PhiLab2 = philab2;
 
@@ -617,6 +641,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case1.recoilExE = recoil_ExcessEnergy;
 
 	case1.recInvMass = recoil_4vect.M();
+	case1.ejInvMass = ejectile_4vect.M();
+	case1.bu1InvMass = missing_4vect.M();
+	case1.bu2InvMass = observed_4vect.M();
 
 	/*******************************************************
 	 *					  CASE II BELOW:				   *
@@ -651,6 +678,7 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	thetalab2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
 	philab2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
+	elab2 = missing_4vect.E() - missing_4vect.M();
 	thetalab2 = radToDeg*acos(missing_4vect.Vect().Z()/missing_4vect.Vect().Mag());
 	philab2 = radToDeg*atan2(missing_4vect.Vect().Y(),missing_4vect.Vect().X());
 
@@ -685,11 +713,15 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case2.KEcm1 = kecm1;
 	case2.ThetaCM1 = theta1;
 	case2.PhiCM1 = phi1;
+	case2.ELab1 = detectedE;
+	case2.ThetaLab1 = detectedTheta;
+	case2.PhiLab1 = detectedPhi;
 
 	case2.Vcm2 = vcm2;
 	case2.KEcm2 = kecm2;
 	case2.ThetaCM2 = theta2;
 	case2.PhiCM2 = phi2;
+	case2.ELab2 = elab2;
 	case2.ThetaLab2 = thetalab2;
 	case2.PhiLab2 = philab2;
 
@@ -698,6 +730,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventMMM(Double_t ejectile
 	case2.recoilExE = recoil_ExcessEnergy;
 
 	case2.recInvMass = recoil_4vect.M();
+	case2.ejInvMass = ejectile_4vect.M();
+	case2.bu1InvMass = missing_4vect.M();
+	case2.bu2InvMass = observed_4vect.M();
 
 	
 	std::pair<CaseResult,CaseResult> retval = std::make_pair(case1,case2);
