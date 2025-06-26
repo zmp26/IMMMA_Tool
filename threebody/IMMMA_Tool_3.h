@@ -32,7 +32,8 @@ struct CaseResult{
 	Double_t ELab1;
 	Double_t ThetaLab1;
 	Double_t PhiLab1;
-	Double_t breakup1_VcmAngle;
+	Double_t breakup1_LabAngleWRTVCM;
+	Double_t breakup1_CMAngleWRTVCM;
 
 	Double_t Vcm2;
 	Double_t KEcm2;
@@ -41,7 +42,8 @@ struct CaseResult{
 	Double_t ELab2;
 	Double_t ThetaLab2;
 	Double_t PhiLab2;
-	Double_t breakup2_VcmAngle;
+	Double_t breakup2_LabAngleWRTVCM;
+	Double_t breakup2_CMAngleWRTVCM;
 
 
 	//add recoil invariant mass calculation:
