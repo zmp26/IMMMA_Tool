@@ -279,11 +279,27 @@ void macro2(){
 	//calculate CM constants and set bounds
 	tool.CalculateCMConstants();
 
-	tool.SetVcm_bu1_bounds(1.32232e-04);//(sigma)
-	tool.SetVcm_bu2_bounds(2.61581e-04);//(sigma)
-	tool.SetKEcm_bu1_bounds(5.57896e-03);//(sigma)
-	tool.SetKEcm_bu2_bounds(1.10286e-02);//(sigma)
-	tool.SetEcm_bounds(1.66187e-02);//(sigma)
+	tool.SetMean_Vcm_bu1(1.13129e-02);
+	tool.SetMean_Vcm_bu2(2.24771e-02);
+	tool.SetMean_KEcm_bu1(2.38566e-01);
+	tool.SetMean_KEcm_bu2(4.73926e-01);
+	tool.SetMean_Ecm(7.12325e-01);
+
+	// tool.SetVcm_bu1_bounds(1.32232e-04);//(sigma)
+	// tool.SetVcm_bu2_bounds(2.61581e-04);//(sigma)
+	// tool.SetKEcm_bu1_bounds(5.57896e-03);//(sigma)
+	// tool.SetKEcm_bu2_bounds(1.10286e-02);//(sigma)
+	// tool.SetEcm_bounds(1.66187e-02);//(sigma)
+
+	const Float_t pm = 0.01;
+	Float_t UPPER = 1+pm;
+	Float_t LOWER = 1-pm;
+
+	tool.SetVcm_bu1_boundsp(UPPER,LOWER);
+	tool.SetVcm_bu2_boundsp(UPPER,LOWER);
+	tool.SetKEcm_bu1_boundsp(UPPER,LOWER);
+	tool.SetKEcm_bu2_boundsp(UPPER,LOWER);
+	tool.SetEcm_boundsp(UPPER,LOWER);
 
 
 	TString infiledatapath = "kin3mc_5000_randDecayData.txt";//kin3mc data
@@ -327,7 +343,8 @@ void macro2(){
 	cout << "M_bu2 = " << tool.GetBreakup2Mass() << endl;
 	cout << endl;
 
-	Int_t count = 0, count1 = 0, count2 = 0;
+	Int_t count = 0, count1 = 0, count2 = 0, count_tie = 0;
+	Int_t count1_c = 0, count2_c = 0;
 
 	while(infiledata >> Elab_ej >> Thetalab_ej >> Philab_ej >> Elab_rec >> Thetalab_rec >> Philab_rec >> Elab_bu1 >> Thetalab_bu1 >> Philab_bu1 >> Elab_bu2 >> Thetalab_bu2 >> Philab_bu2 && infilekeys >> decayparticle){
 		//---------------------------------------------------------EVENT ANALYSIS-------------------------------------------------------------------------------------------------------------
@@ -384,28 +401,34 @@ void macro2(){
 		if(IMMfirstcount > IMMsecondcount){
 			//case1 is the winner!
 			TString temp;
-			if(decayparticle.EqualTo(tool.GetBreakup1Nucleus().ToString())){temp = "YES";} else {temp = "NO";}
+			if(decayparticle.EqualTo(tool.GetBreakup1Nucleus().ToString())){temp = "YES";count1_c += 1;} else {temp = "NO";}
 			outfile << decayparticle << "\t" << tool.GetBreakup1Nucleus().ToString() << "\t" << temp << "\t" << float(IMMfirstcount)/7. << endl;
 			count1 += 1;
 		} else if(IMMfirstcount < IMMsecondcount){
 			//case2 is the winner!
 			TString temp;
-			if(decayparticle.EqualTo(tool.GetBreakup2Nucleus().ToString())){temp = "YES";} else {temp = "NO";}
+			if(decayparticle.EqualTo(tool.GetBreakup2Nucleus().ToString())){temp = "YES";count2_c += 1;} else {temp = "NO";}
 			outfile << decayparticle << "\t" << tool.GetBreakup2Nucleus().ToString() << "\t" << temp << "\t" << float(IMMsecondcount)/7. << endl;
 			count2 += 1;
 		} else {
 			//a tie!
 			TString temp = "TIE";
 			outfile << decayparticle << "\t" << "tie" << "\t" << temp << "\t" << float(IMMfirstcount)/7. << endl;
+			count_tie += 1;
 		}
 
 		count += 1;
 	}
 
 
-	cout << "Sucess! Output file: " << outfilepath << endl;
+	cout << endl;
+	cout << "Success! Output file: " << outfilepath << endl;
 	cout << "Number of events determined to be case 1: " << count1 << "/5000 = " << float(count1)/5000. << endl;
 	cout << "Number of events determined to be case 2: " << count2 << "/5000 = " << float(count2)/5000. << endl;
+	cout << "Number of events undeterminable: " << count_tie << "/10000 = " << float(count_tie)/10000. << endl;
+	cout << endl;
+	cout << "Number of events correctly identifed to be case 1: " << count1_c << "/5000 = " << float(count1_c)/5000. << endl;
+	cout << "Number of events correctly identifed to be case 2: " << count2_c << "/5000 = " << float(count2_c)/5000. << endl;
 	cout << endl;
 
 	outfile.close();
@@ -436,11 +459,27 @@ void macro3(){
 	//calculate CM constants and set bounds
 	tool.CalculateCMConstants();
 
+	tool.SetMean_Vcm_bu1(1.13129e-02);
+	tool.SetMean_Vcm_bu2(2.24771e-02);
+	tool.SetMean_KEcm_bu1(2.38566e-01);
+	tool.SetMean_KEcm_bu2(4.73926e-01);
+	tool.SetMean_Ecm(7.12325e-01);
+
 	tool.SetVcm_bu1_bounds(1.32232e-04);//(sigma)
 	tool.SetVcm_bu2_bounds(2.61581e-04);//(sigma)
 	tool.SetKEcm_bu1_bounds(5.57896e-03);//(sigma)
 	tool.SetKEcm_bu2_bounds(1.10286e-02);//(sigma)
 	tool.SetEcm_bounds(1.66187e-02);//(sigma)
+
+	// const Float_t pm = 0.5;
+	// Float_t UPPER = 1+pm;
+	// Float_t LOWER = 1-pm;
+
+	// tool.SetVcm_bu1_boundsp(UPPER,LOWER);
+	// tool.SetVcm_bu2_boundsp(UPPER,LOWER);
+	// tool.SetKEcm_bu1_boundsp(UPPER,LOWER);
+	// tool.SetKEcm_bu2_boundsp(UPPER,LOWER);
+	// tool.SetEcm_boundsp(UPPER,LOWER);
 
 	TString infiledatapath = "kin3mc_5000_randDecayData.txt";//kin3mc data
 	TString infilekeyspath = "kin3mc_5000_randDecayKeys.txt";//key to which decay particle was picked for each line
@@ -483,8 +522,8 @@ void macro3(){
 	cout << "M_bu2 = " << tool.GetBreakup2Mass() << endl;
 	cout << endl;
 
-	Int_t count = 0, count1 = 0, count2 = 0;
-
+	Int_t count = 0, count1 = 0, count2 = 0, count_tie = 0;
+	Int_t count1_c = 0, count2_c = 0;
 	while(infiledata >> Elab_ej >> Thetalab_ej >> Philab_ej >> Elab_rec >> Thetalab_rec >> Philab_rec >> Elab_bu1 >> Thetalab_bu1 >> Philab_bu1 >> Elab_bu2 >> Thetalab_bu2 >> Philab_bu2 && infilekeys >> decayparticle){
 		//---------------------------------------------------------EVENT ANALYSIS-------------------------------------------------------------------------------------------------------------
 		//perform IMM/MMM calculation for both cases for the data:
@@ -535,26 +574,32 @@ void macro3(){
 		TString temp;
 		if(MMMfirstcount > MMMsecondcount){
 			//case1 is the winner!
-			if(decayparticle.EqualTo(tool.GetBreakup1Nucleus().ToString())){temp="YES";}else{temp="NO";}
+			if(decayparticle.EqualTo(tool.GetBreakup1Nucleus().ToString())){temp="YES"; count1_c += 1;}else{temp="NO";}
 			outfile << decayparticle << "\t" << tool.GetBreakup1Nucleus().ToString() << "\t" << temp << "\t" << float(MMMfirstcount)/5. << endl;
 			count1 += 1;
 		} else if(MMMfirstcount < MMMsecondcount){
 			//case2 is the winner!
-			if(decayparticle.EqualTo(tool.GetBreakup2Nucleus().ToString())){temp="YES";}else{temp="NO";}
+			if(decayparticle.EqualTo(tool.GetBreakup2Nucleus().ToString())){temp="YES"; count2_c += 1;}else{temp="NO";}
 			outfile << decayparticle << "\t" << tool.GetBreakup2Nucleus().ToString() << "\t" << temp << "\t" << float(MMMsecondcount)/5. << endl;
 			count2 += 1;
 		} else {
 			// a tie!
 			temp = "TIE";
 			outfile << decayparticle << "\t" << "tie" << "\t" << temp << "\t" << float(MMMfirstcount)/5. << endl;
+			count_tie += 1;
 		}
 
 		count += 1;
 	}
 
-	cout << "Sucess! Output file: " << outfilepath << endl;
+	cout << endl;
+	cout << "Success! Output file: " << outfilepath << endl;
 	cout << "Number of events determined to be case 1: " << count1 << "/5000 = " << float(count1)/5000. << endl;
 	cout << "Number of events determined to be case 2: " << count2 << "/5000 = " << float(count2)/5000. << endl;
+	cout << "Number of events undeterminable: " << count_tie << "/10000 = " << float(count_tie)/10000. << endl;
+	cout << endl;
+	cout << "Number of events correctly identifed to be case 1: " << count1_c << "/5000 = " << float(count1_c)/5000. << endl;
+	cout << "Number of events correctly identifed to be case 2: " << count2_c << "/5000 = " << float(count2_c)/5000. << endl;
 	cout << endl;
 
 }

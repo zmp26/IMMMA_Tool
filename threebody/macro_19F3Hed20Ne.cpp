@@ -85,11 +85,27 @@ void macro2(){
 
 	tool.CalculateCMConstants();
 
-	tool.SetVcm_bu1_bounds(2.86096e-07);//(sigma)
-	tool.SetVcm_bu2_bounds(7.08662e-07);//(sigma)
-	tool.SetKEcm_bu1_bounds(2.26854e-05);//(sigma)
-	tool.SetKEcm_bu2_bounds(5.63272e-05);//(sigma)
-	tool.SetEcm_bounds(4.30954e-05);//(sigma)
+	//update with mean from kin3mc as well: (this is potentially different from the expected/theory value!)
+	tool.SetMean_Vcm_bu1(2.13010e-02);
+	tool.SetMean_Vcm_bu2(5.33154e-03);
+	tool.SetMean_KEcm_bu1(8.45848e-01);
+	tool.SetMean_KEcm_bu2(2.11757e-01);
+	tool.SetMean_Ecm(1.05760e+00);
+
+	// tool.SetVcm_bu1_bounds(2.86096e-07);//(sigma)
+	// tool.SetVcm_bu2_bounds(7.08662e-07);//(sigma)
+	// tool.SetKEcm_bu1_bounds(2.26854e-05);//(sigma)
+	// tool.SetKEcm_bu2_bounds(5.63272e-05);//(sigma)
+	// tool.SetEcm_bounds(4.30954e-05);//(sigma)
+
+	const Double_t LOWER = 0.99;
+	const Double_t UPPER = 1.01;
+
+	tool.SetVcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetVcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetEcm_boundsp(LOWER,UPPER);
 
 	TString infiledatapath = "macro_19F3Hed20Ne_10000_randData.out";
 	TString infilekeyspath = "macro_19F3Hed20Ne_10000_randKeys.out";
@@ -234,11 +250,20 @@ void macro3(){
 	tool.SetMean_KEcm_bu2(2.11757e-01);
 	tool.SetMean_Ecm(1.05760e+00);
 	//set bounds from sigma from fit from kin3mc
-	tool.SetVcm_bu1_bounds(2.86096e-07);//(sigma)
-	tool.SetVcm_bu2_bounds(7.17390e-08);//(sigma)
-	tool.SetKEcm_bu1_bounds(2.26854e-05);//(sigma)
-	tool.SetKEcm_bu2_bounds(5.70584e-06);//(sigma)
-	tool.SetEcm_bounds(2.84114e-05);//(sigma)
+	// tool.SetVcm_bu1_bounds(2.86096e-07);//(sigma)
+	// tool.SetVcm_bu2_bounds(7.17390e-08);//(sigma)
+	// tool.SetKEcm_bu1_bounds(2.26854e-05);//(sigma)
+	// tool.SetKEcm_bu2_bounds(5.70584e-06);//(sigma)
+	// tool.SetEcm_bounds(2.84114e-05);//(sigma)
+
+	const Double_t LOWER = 0.99;
+	const Double_t UPPER = 1.01;
+
+	tool.SetVcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetVcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetEcm_boundsp(LOWER,UPPER);
 
 
 	TString infiledatapath = "macro_19F3Hed20Ne_10000_randData.out";
@@ -284,7 +309,7 @@ void macro3(){
 	Int_t count = 0, count1 = 0, count2 = 0, count_tie = 0;
 	Int_t count1_c = 0, count2_c = 0;
 
-	while(infiledata >> Elab_ej >> Thetalab_ej >> Philab_ej >> Elab_rec >> Thetalab_rec >> Philab_rec >> Elab_bu1 >> Thetalab_bu1 >> Philab_bu1 >> Elab_bu2 >> Thetalab_bu2 >> Philab_bu2 && infilekeys >> decayparticle && count < 50){
+	while(infiledata >> Elab_ej >> Thetalab_ej >> Philab_ej >> Elab_rec >> Thetalab_rec >> Philab_rec >> Elab_bu1 >> Thetalab_bu1 >> Philab_bu1 >> Elab_bu2 >> Thetalab_bu2 >> Philab_bu2 && infilekeys >> decayparticle){// && count < 50){
 		//---------------------------------------------------------EVENT ANALYSIS-------------------------------------------------------------------------------------------------------------
 		std::pair<CaseResult,CaseResult> MMMresults = tool.AnalyzeEventMMM(Elab_ej,Thetalab_ej,Philab_ej,Elab_bu1,Thetalab_bu1,Philab_bu1);
 		CaseResult MMMcase1 = MMMresults.first;
@@ -303,19 +328,19 @@ void macro3(){
 
 		//---------------------------------------------------------CASE DETERMINATION-------------------------------------------------------------------------------------------------------------
 		Int_t MMMfirstcount = 0, MMMsecondcount = 0;
-		cout << endl << count << endl;
-		if(tool.CheckInBounds_Vcm_bu1(MMMresults.first.Vcm1)) {MMMfirstcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.Vcm1);}
-		if(tool.CheckInBounds_Vcm_bu2(MMMresults.first.Vcm2)) {MMMfirstcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.Vcm2);}
-		if(tool.CheckInBounds_KEcm_bu1(MMMresults.first.KEcm1)) {MMMfirstcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.KEcm1);}
-		if(tool.CheckInBounds_KEcm_bu2(MMMresults.first.KEcm2)) {MMMfirstcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.KEcm2);}
-		if(tool.CheckInBounds_Ecm(MMMresults.first.Ecm)) {MMMfirstcount += 1;cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.Ecm);}
-		cout << endl;
-		if(tool.CheckInBounds_Vcm_bu1(MMMresults.second.Vcm1)) {MMMsecondcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.Vcm1);}
-		if(tool.CheckInBounds_Vcm_bu2(MMMresults.second.Vcm2)) {MMMsecondcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.Vcm2);}
-		if(tool.CheckInBounds_KEcm_bu1(MMMresults.second.KEcm1)) {MMMsecondcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.KEcm1);}
-		if(tool.CheckInBounds_KEcm_bu2(MMMresults.second.KEcm2)) {MMMsecondcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.KEcm2);}
-		if(tool.CheckInBounds_Ecm(MMMresults.second.Ecm)) {MMMsecondcount += 1; cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.Ecm);}
-		cout << endl;
+		//cout << endl << count << endl;
+		if(tool.CheckInBounds_Vcm_bu1(MMMresults.first.Vcm1)) {MMMfirstcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.Vcm1);}
+		if(tool.CheckInBounds_Vcm_bu2(MMMresults.first.Vcm2)) {MMMfirstcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.Vcm2);}
+		if(tool.CheckInBounds_KEcm_bu1(MMMresults.first.KEcm1)) {MMMfirstcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.KEcm1);}
+		if(tool.CheckInBounds_KEcm_bu2(MMMresults.first.KEcm2)) {MMMfirstcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.KEcm2);}
+		if(tool.CheckInBounds_Ecm(MMMresults.first.Ecm)) {MMMfirstcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.first.Ecm);}
+		//cout << endl;
+		if(tool.CheckInBounds_Vcm_bu1(MMMresults.second.Vcm1)) {MMMsecondcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.Vcm1);}
+		if(tool.CheckInBounds_Vcm_bu2(MMMresults.second.Vcm2)) {MMMsecondcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.Vcm2);}
+		if(tool.CheckInBounds_KEcm_bu1(MMMresults.second.KEcm1)) {MMMsecondcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.KEcm1);}
+		if(tool.CheckInBounds_KEcm_bu2(MMMresults.second.KEcm2)) {MMMsecondcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.KEcm2);}
+		if(tool.CheckInBounds_Ecm(MMMresults.second.Ecm)) {MMMsecondcount += 1;}// cout << "pass\t";} else { cout << Form("%.17g\t",MMMresults.second.Ecm);}
+		//cout << endl;
 
 		TString temp;
 		if(MMMfirstcount > MMMsecondcount){

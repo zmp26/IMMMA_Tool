@@ -24,11 +24,20 @@ void macro2(){
 	tool.SetMean_KEcm_bu2(3.27854e-02);
 	tool.SetMean_Ecm(4.22857e-01);
 
-	tool.SetVcm_bu1_bounds(7.18612e-04);
-	tool.SetVcm_bu2_bounds(6.01524e-05);
-	tool.SetKEcm_bu1_bounds(1.95527e-02);
-	tool.SetKEcm_bu2_bounds(1.66366e-03);
-	tool.SetEcm_bounds(2.13208e-02);
+	// tool.SetVcm_bu1_bounds(7.18612e-04);
+	// tool.SetVcm_bu2_bounds(6.01524e-05);
+	// tool.SetKEcm_bu1_bounds(1.95527e-02);
+	// tool.SetKEcm_bu2_bounds(1.66366e-03);
+	// tool.SetEcm_bounds(2.13208e-02);
+
+	const Double_t LOWER = 0.99;
+	const Double_t UPPER = 1.01;
+
+	tool.SetVcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetVcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetEcm_boundsp(LOWER,UPPER);
 
 	TString infiledatapath = "macro_12C3Hed13N_10000_randData.out";
 	TString infilekeyspath = "macro_12C3Hed13N_10000_randKeys.out";
@@ -153,11 +162,20 @@ void macro3(){
 	tool.SetMean_KEcm_bu2(3.27854e-02);
 	tool.SetMean_Ecm(4.22857e-01);
 
-	tool.SetVcm_bu1_bounds(7.18612e-04);
-	tool.SetVcm_bu2_bounds(6.01524e-05);
-	tool.SetKEcm_bu1_bounds(1.95527e-02);
-	tool.SetKEcm_bu2_bounds(1.66366e-03);
-	tool.SetEcm_bounds(2.13208e-02);
+	// tool.SetVcm_bu1_bounds(7.18612e-04);
+	// tool.SetVcm_bu2_bounds(6.01524e-05);
+	// tool.SetKEcm_bu1_bounds(1.95527e-02);
+	// tool.SetKEcm_bu2_bounds(1.66366e-03);
+	// tool.SetEcm_bounds(2.13208e-02);
+
+	const Double_t LOWER = 0.95;
+	const Double_t UPPER = 1.05;
+
+	tool.SetVcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetVcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu1_boundsp(LOWER,UPPER);
+	tool.SetKEcm_bu2_boundsp(LOWER,UPPER);
+	tool.SetEcm_boundsp(LOWER,UPPER);
 
 	TString infiledatapath = "macro_12C3Hed13N_10000_randData.out";
 	TString infilekeyspath = "macro_12C3Hed13N_10000_randKeys.out";
