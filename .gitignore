@@ -1,0 +1,10 @@
+threebody/*.d
+threebody/*.so
+threebody/*.pcm
+threebody/*.out
+threebody/*.txt
+fourbody/*.d
+fourbody/*.so
+fourbody/*.pcm
+fourbody/*.out
+fourbodt/*.txt
