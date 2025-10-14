@@ -159,10 +159,13 @@ class IMMMA_Tool_3{
 		void CalculateCMConstants();
 
 		//IMM Event analysis function:
-		std::pair<CaseResult,CaseResult> AnalyzeEventIMM(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi, Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi, Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi);
+		std::pair<CaseResult,CaseResult> AnalyzeEventIMM(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
+														 Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
+														 Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi);
 
 		//MMM Event analysis function:
-		std::pair<CaseResult,CaseResult> AnalyzeEventMMM(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi, Double_t detectedE, Double_t detectedTheta, Double_t detectedPhi);
+		std::pair<CaseResult,CaseResult> AnalyzeEventMMM(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
+														 Double_t detectedE, Double_t detectedTheta, Double_t detectedPhi);
 
 		//calculate Excitation energy of recoil from ejectile, beam, target information:
 		Double_t AnalyzeEventCalculateRecoilExE(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi);
