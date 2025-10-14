@@ -509,6 +509,9 @@ std::pair<CaseResult,CaseResult> IMMMA_Tool_3::AnalyzeEventIMM(Double_t ejectile
 	philab2 = radToDeg*atan2(breakup2_4vect.Vect().Y(),breakup2_4vect.Vect().X());
 	if(philab2<0) philab2 += 360.;
 
+	//update boost vector for case 2
+	boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
+
 	//calculate the angle between the break up particles in the lab and the CM velocity vector (-boostvector)
 	breakup1_LabAngleWRTVCM = radToDeg*breakup1_4vect.Vect().Angle(-boostvector);
 	breakup2_LabAngleWRTVCM = radToDeg*breakup2_4vect.Vect().Angle(-boostvector);
