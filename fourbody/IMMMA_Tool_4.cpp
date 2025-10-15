@@ -1,6 +1,529 @@
 #include "IMMMA_Tool_4.h"
 #include "TLorentzVector.h"
 
+IMMMA_Tool_4::IMMMA_Tool_4(){
+	//default constructor
+	ThetaCMSum1.expected = 180.;
+	ThetaCMSum1.lower = 179.;
+	ThetaCMSum1.upper = 181.;
+
+	PhiCMSep1.expected = 180.;
+	PhiCMSep1.lower = 179.;
+	PhiCMSep1.upper = 181.;
+
+	ThetaCMSum2.expected = 180.;
+	ThetaCMSum2.lower = 179.;
+	ThetaCMSum2.upper = 181.;
+
+	PhiCMSep2.expected = 180.;
+	PhiCMSep2.lower = 179.;
+	PhiCMSep2.upper = 181.;
+}
+
+//setters:
+void IMMMA_Tool_4::SetBeamNucleus(Int_t A, TString sym, Double_t mass){
+	this->beam.A = A;
+	this->beam.sym = sym;
+	this->beam.mass = mass;
+}
+
+void IMMMA_Tool_4::SetTargetNucleus(Int_t A, TString sym, Double_t mass){
+	this->target.A = A;
+	this->target.sym = sym;
+	this->target.mass = mass;
+}
+
+void IMMMA_Tool_4::SetEjectileNucleus(Int_t A, TString sym, Double_t mass){
+	this->ejectile.A = A;
+	this->ejectile.sym = sym;
+	this->ejectile.mass = mass;
+}
+
+void IMMMA_Tool_4::SetRecoilNucleus(Int_t A, TString sym, Double_t mass){
+	this->recoil.A = A;
+	this->recoil.sym = sym;
+	this->recoil.mass = mass;
+}
+
+void IMMMA_Tool_4::SetBreakup1Nucleus(Int_t A, TString sym, Double_t mass){
+	this->breakup1.A = A;
+	this->breakup1.sym = sym;
+	this->breakup1.mass = mass;
+}
+
+void IMMMA_Tool_4::SetDaughter1Nucleus(Int_t A, TString sym, Double_t mass){
+	this->daughter1.A = A;
+	this->daughter1.sym = sym;
+	this->daughter1.mass = mass;
+}
+
+void IMMMA_Tool_4::SetBreakup2Nucleus(Int_t A, TString sym, Double_t mass){
+	this->breakup2.A = A;
+	this->breakup2.sym = sym;
+	this->breakup2.mass = mass;
+}
+
+void IMMMA_Tool_4::SetBreakup3Nucleus(Int_t A, TString sym, Double_t mass){
+	this->breakup3.A = A;
+	this->breakup3.sym = sym;
+	this->breakup3.mass = mass;
+}
+
+void IMMMA_Tool_4::SetBeamEnergy(Double_t energy){
+	this->beam_energy = energy;
+}
+
+void IMMMA_Tool_4::SetRecoilExE(Double_t energy){
+	this->recoil_exE = energy;
+}
+
+void IMMMA_Tool_4::SetVcm_bu1_bounds(Double_t lower, Double_t upper){
+	this->Vcm_bu1.lower = lower;
+	this->Vcm_bu1.upper = upper;
+}
+
+void IMMMA_Tool_4::SetVcm_bu1_bounds(Double_t sigma){
+	this->Vcm_bu1.lower = this->Vcm_bu1.mean - 2*sigma;
+	this->Vcm_bu1.upper = this->Vcm_bu1.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetVcm_bu1_boundsp(Double_t lowerp, Double_t upperp){
+	this->Vcm_bu1.lower = this->Vcm_bu1.mean*lowerp;
+	this->Vcm_bu1.upper = this->Vcm_bu1.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetVcm_bu2_bounds(Double_t lower, Double_t upper){
+	this->Vcm_bu2.lower = lower;
+	this->Vcm_bu2.upper = upper;
+}
+
+void IMMMA_Tool_4::SetVcm_bu2_bounds(Double_t sigma){
+	this->Vcm_bu2.lower = this->Vcm_bu2.mean - 2*sigma;
+	this->Vcm_bu2.upper = this->Vcm_bu2.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetVcm_bu2_boundsp(Double_t lowerp, Double_t upperp){
+	this->Vcm_bu2.lower = this->Vcm_bu2.mean*lowerp;
+	this->Vcm_bu2.upper = this->Vcm_bu2.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetVcm_bu3_bounds(Double_t lower, Double_t upper){
+	this->Vcm_bu3.lower = lower;
+	this->Vcm_bu3.upper = upper;
+}
+
+void IMMMA_Tool_4::SetVcm_bu3_bounds(Double_t sigma){
+	this->Vcm_bu3.lower = this->Vcm_bu3.mean - 2*sigma;
+	this->Vcm_bu3.upper = this->Vcm_bu3.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetVcm_bu3_boundsp(Double_t lowerp, Double_t upperp){
+	this->Vcm_bu3.lower = this->Vcm_bu3.mean*lowerp;
+	this->Vcm_bu3.upper = this->Vcm_bu3.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu1_bounds(Double_t lower, Double_t upper){
+	this->KEcm_bu1.lower = lower;
+	this->KEcm_bu1.upper = upper;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu1_bounds(Double_t sigma){
+	this->KEcm_bu1.lower = this->KEcm_bu1.mean - 2*sigma;
+	this->KEcm_bu1.upper = this->KEcm_bu1.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu1_boundsp(Double_t lowerp, Double_t upperp){
+	this->KEcm_bu1.lower = this->KEcm_bu1.mean*lowerp;
+	this->KEcm_bu1.upper = this->KEcm_bu1.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu2_bounds(Double_t lower, Double_t upper){
+	this->KEcm_bu2.lower = lower;
+	this->KEcm_bu2.upper = upper;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu2_bounds(Double_t sigma){
+	this->KEcm_bu2.lower = this->KEcm_bu2.mean - 2*sigma;
+	this->KEcm_bu2.upper = this->KEcm_bu2.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu2_boundsp(Double_t lowerp, Double_t upperp){
+	this->KEcm_bu2.lower = this->KEcm_bu2.mean*lowerp;
+	this->KEcm_bu2.upper = this->KEcm_bu2.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu3_bounds(Double_t lower, Double_t upper){
+	this->KEcm_bu3.lower = lower;
+	this->KEcm_bu3.upper = upper;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu3_bounds(Double_t sigma){
+	this->KEcm_bu3.lower = this->KEcm_bu3.mean - 2*sigma;
+	this->KEcm_bu3.upper = this->KEcm_bu3.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetKEcm_bu3_boundsp(Double_t lowerp, Double_t upperp){
+	this->KEcm_bu3.lower = this->KEcm_bu3.mean*lowerp;
+	this->KEcm_bu3.upper = this->KEcm_bu3.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetEcm1_bounds(Double_t lower, Double_t upper){
+	this->Ecm1.lower = lower;
+	this->Ecm1.upper = upper;
+}
+
+void IMMMA_Tool_4::SetEcm1_bounds(Double_t sigma){
+	this->Ecm1.lower = this->Ecm1.mean - 2*sigma;
+	this->Ecm1.upper = this->Ecm1.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetEcm1_boundsp(Double_t lowerp, Double_t upperp){
+	this->Ecm1.lower = this->Ecm1.mean*lowerp;
+	this->Ecm1.upper = this->Ecm1.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetEcm2_bounds(Double_t lower, Double_t upper){
+	this->Ecm1.lower = lower;
+	this->Ecm1.upper = upper;
+}
+
+void IMMMA_Tool_4::SetEcm2_bounds(Double_t sigma){
+	this->Ecm1.lower = this->Ecm1.mean - 2*sigma;
+	this->Ecm1.upper = this->Ecm1.mean + 2*sigma;
+}
+
+void IMMMA_Tool_4::SetEcm2_boundsp(Double_t lowerp, Double_t upperp){
+	this->Ecm1.lower = this->Ecm1.mean*lowerp;
+	this->Ecm1.upper = this->Ecm1.mean*upperp;
+}
+
+void IMMMA_Tool_4::SetMean_Vcm_bu1(Double_t mean){
+	this->Vcm_bu1.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMean_Vcm_bu2(Double_t mean){
+	this->Vcm_bu2.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMean_Vcm_bu3(Double_t mean){
+	this->Vcm_bu2.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMean_KEcm_bu1(Double_t mean){
+	this->KEcm_bu1.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMean_KEcm_bu2(Double_t mean){
+	this->KEcm_bu2.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMean_KEcm_bu3(Double_t mean){
+	this->KEcm_bu3.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMean_Ecm1(Double_t mean){
+	this->Ecm1.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMean_Ecm2(Double_t mean){
+	this->Ecm2.mean = mean;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_Vcm_bu1(){
+	this->Vcm_bu1.mean = this->Vcm_bu1.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_Vcm_bu2(){
+	this->Vcm_bu2.mean = this->Vcm_bu2.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_Vcm_bu3(){
+	this->Vcm_bu3.mean = this->Vcm_bu3.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_KEcm_bu1(){
+	this->KEcm_bu1.mean = this->KEcm_bu1.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_KEcm_bu2(){
+	this->KEcm_bu2.mean = this->KEcm_bu2.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_KEcm_bu3(){
+	this->KEcm_bu3.mean = this->KEcm_bu3.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_Ecm1(){
+	this->Ecm1.mean = this->Ecm1.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_Ecm2(){
+	this->Ecm2.mean = this->Ecm2.expected;
+}
+
+void IMMMA_Tool_4::SetMeanToExpected_All(){
+	this->SetMeanToExpected_Vcm_bu1();
+	this->SetMeanToExpected_Vcm_bu2();
+	this->SetMeanToExpected_Vcm_bu3();
+	this->SetMeanToExpected_KEcm_bu1();
+	this->SetMeanToExpected_KEcm_bu2();
+	this->SetMeanToExpected_KEcm_bu3();
+	this->SetMeanToExpected_Ecm1();
+	this->SetMeanToExpected_Ecm2();
+}
+
+//getters
+Nucleus4 IMMMA_Tool_4::GetBeamNucleus(){
+	return this->beam;
+}
+
+Nucleus4 IMMMA_Tool_4::GetTargetNucleus(){
+	return this->target;
+}
+
+Nucleus4 IMMMA_Tool_4::GetEjectileNucleus(){
+	return this->ejectile;
+}
+
+Nucleus4 IMMMA_Tool_4::GetRecoilNucleus(){
+	return this->recoil;
+}
+
+Nucleus4 IMMMA_Tool_4::GetBreakup1Nucleus(){
+	return this->breakup1;
+}
+
+Nucleus4 IMMMA_Tool_4::GetDaughter1Nucleus(){
+	return this->daughter1;
+}
+
+Nucleus4 IMMMA_Tool_4::GetBreakup2Nucleus(){
+	return this->breakup2;
+}
+
+Nucleus4 IMMMA_Tool_4::GetBreakup3Nucleus(){
+	return this->breakup3;
+}
+
+Double_t IMMMA_Tool_4::GetBeamMass(){
+	return this->beam.mass;
+}
+
+Double_t IMMMA_Tool_4::GetTargetMass(){
+	return this->target.mass;
+}
+
+Double_t IMMMA_Tool_4::GetEjectileMass(){
+	return this->ejectile.mass;
+}
+
+Double_t IMMMA_Tool_4::GetRecoilMass(){
+	return this->recoil.mass;
+}
+
+Double_t IMMMA_Tool_4::GetBreakup1Mass(){
+	return this->breakup1.mass;
+}
+
+Double_t IMMMA_Tool_4::GetDaughter1Mass(){
+	return this->daughter1.mass;
+}
+
+Double_t IMMMA_Tool_4::GetBreakup2Mass(){
+	return this->breakup2.mass;
+}
+
+Double_t IMMMA_Tool_4::GetBreakup3Mass(){
+	return this->breakup3.mass;
+}
+
+Double_t IMMMA_Tool_4::GetBeamEnergy(){
+	return this->beam_energy;
+}
+
+Double_t IMMMA_Tool_4::GetRecoilExE(){
+	return this->recoil_exE;
+}
+
+Double_t IMMMA_Tool_4::GetExpectedVcm_bu1(){
+	return this->Vcm_bu1.expected;
+}
+
+Double_t IMMMA_Tool_4::GetExpectedVcm_bu2(){
+	return this->Vcm_bu2.expected;
+}
+
+Double_t IMMMA_Tool_4::GetExpectedVcm_bu3(){
+	return this->Vcm_bu3.expected;
+}
+
+
+Double_t IMMMA_Tool_4::GetExpectedKEcm_bu1(){
+	return this->KEcm_bu1.expected;
+}
+
+Double_t IMMMA_Tool_4::GetExpectedKEcm_bu2(){
+	return this->KEcm_bu2.expected;
+}
+
+Double_t IMMMA_Tool_4::GetExpectedKEcm_bu3(){
+	return this->KEcm_bu3.expected;
+}
+
+Double_t IMMMA_Tool_4::GetExpectedEcm1(){
+	return this->Ecm1.expected;
+}
+
+Double_t IMMMA_Tool_4::GetExpectedEcm2(){
+	return this->Ecm2.expected;
+}
+
+CMConstant4 IMMMA_Tool_4::GetVcm_bu1(){
+	return this->Vcm_bu1;
+}
+
+CMConstant4 IMMMA_Tool_4::GetVcm_bu2(){
+	return this->Vcm_bu2;
+}
+
+CMConstant4 IMMMA_Tool_4::GetVcm_bu3(){
+	return this->Vcm_bu3;
+}
+
+CMConstant4 IMMMA_Tool_4::GetKEcm_bu1(){
+	return this->KEcm_bu1;
+}
+
+CMConstant4 IMMMA_Tool_4::GetKEcm_bu2(){
+	return this->KEcm_bu2;
+}
+
+CMConstant4 IMMMA_Tool_4::GetKEcm_bu3(){
+	return this->KEcm_bu3;
+}
+
+CMConstant4 IMMMA_Tool_4::GetEcm1(){
+	return this->Ecm1;
+}
+
+CMConstant4 IMMMA_Tool_4::GetEcm2(){
+	return this->Ecm2;
+}
+
+TString IMMMA_Tool_4::GetReactionString(){
+	return this->reaction;
+}
+
+TString IMMMA_Tool_4::GetBreakup1String(){
+	return this->breakup1str;
+}
+
+TString IMMMA_Tool_4::GetBreakup2String(){
+	return this->breakup2str;
+}
+
+
+//checkers
+bool IMMMA_Tool_4::CheckInBounds_Vcm_bu1(Double_t test){
+	return (this->Vcm_bu1.lower <= test && this->Vcm_bu1.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_Vcm_bu2(Double_t test){
+	return (this->Vcm_bu2.lower <= test && this->Vcm_bu2.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_Vcm_bu3(Double_t test){
+	return (this->Vcm_bu3.lower <= test && this->Vcm_bu3.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_KEcm_bu1(Double_t test){
+	return (this->KEcm_bu1.lower <= test && this->KEcm_bu1.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_KEcm_bu2(Double_t test){
+	return (this->KEcm_bu2.lower <= test && this->KEcm_bu2.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_KEcm_bu3(Double_t test){
+	return (this->KEcm_bu3.lower <= test && this->KEcm_bu3.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_Ecm1(Double_t test){
+	return (this->Ecm1.lower <= test && this->Ecm1.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_Ecm2(Double_t test){
+	return (this->Ecm2.lower <= test && this->Ecm2.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_ThetaCMSum1(Double_t test){
+	return (this->ThetaCMSum1.lower <= test && this->ThetaCMSum1.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_ThetaCMSum2(Double_t test){
+	return (this->ThetaCMSum2.lower <= test && this->ThetaCMSum2.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_PhiCMSep1(Double_t test){
+	return (this->PhiCMSep1.lower <= test && this->PhiCMSep1.upper >= test);
+}
+
+bool IMMMA_Tool_4::CheckInBounds_PhiCMSep2(Double_t test){
+	return (this->PhiCMSep2.lower <= test && this->PhiCMSep2.upper >= test);
+}
+
+
+//init reaction function
+void IMMMA_Tool_4::CalculateCMConstants(){
+	if(this->recoil.Filled() && this->breakup1.Filled() && this->breakup2.Filled()){
+		this->Ecm1.expected = this->recoil.mass + this->recoil_exE - this->breakup1.mass - this->daughter1.mass;
+		this->Ecm2.expected = this->daughter1.mass - this->breakup2.mass - this->breakup3.mass;
+		this->Vcm_bu1.expected = sqrt(2*(this->recoil.mass+this->recoil_exE)*this->Ecm1.expected/(this->breakup1.mass*(this->breakup1.mass + this->recoil.mass + this->recoil_exE)));//in CM frame of first break up (so recoil and 1 back to back)
+		this->Vcm_bu2.expected = sqrt(2*this->breakup3.mass*this->Ecm2.expected/(this->breakup2.mass*(this->breakup2.mass + this->breakup3.mass)));//in CM frame of last break up (so 2, 3 back to back)
+		this->Vcm_bu3.expected = sqrt(2*this->breakup2.mass*this->Ecm2.expected/(this->breakup3.mass*(this->breakup2.mass + this->breakup3.mass)));//in CM frame of last break up (so 2, 3 back to back)
+		this->KEcm_bu1.expected = 0.5*this->breakup1.mass*this->Vcm_bu1.expected*this->Vcm_bu1.expected;//in CM frame of first break up (so recoil and 1 back to back)
+		this->KEcm_bu2.expected = 0.5*this->breakup2.mass*this->Vcm_bu2.expected*this->Vcm_bu2.expected;//in CM frame of last break up (so 2, 3 back to back)
+		this->KEcm_bu3.expected = 0.5*this->breakup3.mass*this->Vcm_bu3.expected*this->Vcm_bu3.expected;//in CM frame of last break up (so 2, 3 back to back)
+
+		this->reaction = Form("%d%s(%d%s,%d%s)%d%s",this->target.A,this->target.sym.Data(),this->beam.A,this->beam.sym.Data(),this->ejectile.A,this->ejectile.sym.Data(),this->recoil.A,this->recoil.sym.Data());
+		this->breakup1str = Form("%d%s ---> %d%s + %d%s",this->recoil.A,this->recoil.sym.Data(), this->daughter1.A, this->daughter1.sym.Data(), this->breakup2.A, this->breakup2.sym.Data());
+		this->breakup2str = Form("%d%s ---> %d%s + %d%s",this->daughter1.A, this->daughter1.sym.Data(), this->breakup2.A, this->breakup2.sym.Data(), this->breakup3.A, this->breakup3.sym.Data());
+
+		//set means to expected -> these can be updated by the user in their macro by calling IMMMA_Tool_4::SetMean_Vcm_bu1(), etc...
+		this->Ecm1.mean = this->Ecm1.expected;
+		this->Ecm2.mean = this->Ecm2.expected;
+		this->Vcm_bu1.mean = this->Vcm_bu1.expected;
+		this->Vcm_bu2.mean = this->Vcm_bu2.expected;
+		this->Vcm_bu3.mean = this->Vcm_bu3.expected;
+		this->KEcm_bu1.mean = this->KEcm_bu1.expected;
+		this->KEcm_bu2.mean = this->KEcm_bu2.expected;
+		this->KEcm_bu3.mean = this->KEcm_bu3.expected;
+	} else {
+		this->Ecm1.expected = -666;
+		this->Ecm2.expected = -666;
+		this->Vcm_bu1.expected = -666;
+		this->Vcm_bu2.expected = -666;
+		this->Vcm_bu3.expected = -666;
+		this->KEcm_bu1.expected = -666;
+		this->KEcm_bu2.expected = -666;
+		this->KEcm_bu3.expected = -666;
+
+		this->reaction = "null";
+		this->breakup1str = "null";
+		this->breakup2str = "null";
+
+		//set means to expected -> these can be updated by the user in their macro by calling IMMMA_Tool_4::SetMean_Vcm_bu1(), etc...
+		this->Ecm1.mean = this->Ecm1.expected;
+		this->Ecm2.mean = this->Ecm2.expected;
+		this->Vcm_bu1.mean = this->Vcm_bu1.expected;
+		this->Vcm_bu2.mean = this->Vcm_bu2.expected;
+		this->Vcm_bu3.mean = this->Vcm_bu3.expected;
+		this->KEcm_bu1.mean = this->KEcm_bu1.expected;
+		this->KEcm_bu2.mean = this->KEcm_bu2.expected;
+		this->KEcm_bu3.mean = this->KEcm_bu3.expected;
+	}
+}
+
 std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
 								   Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
 								   Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi,
@@ -10,8 +533,6 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Dou
 	std::array<CaseResult4, 6> results;
 
 	Double_t cE, cTheta, cPhi, dE, dTheta, dPhi, eE, eTheta, ePhi;
-
-	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, breakup1_4vect, breakup2_4vect, breakup3_4vect;
 	
 	CaseResult4 case1, case2, case3, case4, case5, case6;
 
@@ -227,6 +748,8 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 								   		Double_t detected3E, Double_t detected3Theta, Double_t detected3Phi)
 {
 
+	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, breakup1_4vect, breakup2_4vect, breakup3_4vect;
+
 	CaseResult4 result;
 
 	//calculate momenta:
@@ -275,7 +798,7 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 	Double_t breakupAngleLab = radToDeg*acos(breakup2_4vect.Vect().Dot(breakup3_4vect.Vect())/(breakup2_4vect.Vect().Mag()*breakup3_4vect.Vect().Mag()));
 
 	Double_t thetalab2 = radToDeg*acos(breakup2_4vect.Vect().Z()/breakup2_4vect.Vect().Mag());
-	Double_t philab2 = radToDeg*atan2(breakup2_4vect.Vect.Y(), breakup2_4vect.Vect().X());
+	Double_t philab2 = radToDeg*atan2(breakup2_4vect.Vect().Y(), breakup2_4vect.Vect().X());
 
 	//obtain the boost vector to boost into the breakup CM frame:
 	TVector3 boostvector = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
