@@ -83,6 +83,10 @@ struct CMConstant4{
 	Double_t upper;
 };
 
+struct DetectedParticle4{
+	Double_t E, Theta, Phi, Mass;
+};
+
 
 class IMMMA_Tool_4{
 /*
@@ -249,10 +253,12 @@ private:
 	CMConstant4 PhiCMSep2;			//CM frame of 2nd decay breakup2 and breakup3
 
 	//IMM Event Analysis helper function:
-	CaseResult4 CalculateCase(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
-							  Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
-							  Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi,
-							  Double_t detected3E, Double_t detected3Theta, Double_t detected3Phi);
+	// CaseResult4 CalculateCase(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
+	// 						  Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
+	// 						  Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi,
+	// 						  Double_t detected3E, Double_t detected3Theta, Double_t detected3Phi);
+
+	CaseResult4 CalculateCase(const DetectedParticle4& ej, const DetectedParticle4& bu1, const DetectedParticle4& bu2, const DetectedParticle4& bu3);
 
 	//helper function to calculate recoil excitation energy:
 	Double_t AnalyzeEventCalculateRecoilExE(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi);

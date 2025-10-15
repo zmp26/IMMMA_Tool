@@ -532,194 +532,132 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Dou
 
 	std::array<CaseResult4, 6> results;
 
-	Double_t cE, cTheta, cPhi, dE, dTheta, dPhi, eE, eTheta, ePhi;
+	//Double_t cE, cTheta, cPhi, cMass, dE, dTheta, dPhi, dMass, eE, eTheta, ePhi, eMass;
+	DetectedParticle4 ej = {ejectileE, ejectileTheta, ejectilePhi, this->ejectile.mass};
+	DetectedParticle4 det1 = {detected1E, detected1Theta, detected1Phi, 0.};//mass set to 0 here but updated in case definitions below!!!!!
+	DetectedParticle4 det2 = {detected2E, detected2Theta, detected2Phi, 0.};//mass set to 0 here but updated in case definitions below!!!!!
+	DetectedParticle4 det3 = {detected3E, detected3Theta, detected3Phi, 0.};//mass set to 0 here but updated in case definitions below!!!!!
+
+	std::vector<std::tuple<DetectedParticle4, DetectedParticle4, DetectedParticle4>> permutations = {
+
+
+		/*******************************************************
+		 * 										  			   *
+		 *					  CASE I BELOW:				 	   *
+		 * 				  c = kin4mc particle 2 = det1		   *
+		 * 				  d = kin4mc particle 3 = det2		   *
+		 * 				  e = kin4mc particle 4 = det3		   *
+		 * 										  			   *
+		 *******************************************************/
+		//in this case, we assume we detect the ejectile and three particles we assume to be the resonance decay particles
+		//case 1 is the case in which detected1 uses mass information from breakup1
+		//						  and detected2 uses mass information from breakup2
+		//						  and detected3 uses mass information from breakup3
+		//case1:
+		{ {det1.E, det1.Theta, det1.Phi, this->breakup1.mass},
+		  {det2.E, det2.Theta, det2.Phi, this->breakup2.mass},
+		  {det3.E, det3.Theta, det3.Phi, this->breakup3.mass}
+		},
+
+
+		/*******************************************************
+		 * 										  			   *
+		 *					  CASE II BELOW:				   *
+		 * 				  c = kin4mc particle 2 = det1 		   *
+		 * 				  d = kin4mc particle 4 = det3 		   *
+		 * 				  e = kin4mc particle 3 = det2 		   *
+		 * 										  			   *
+		 *******************************************************/
+		//in this case, we assume we detect the ejectile and three particles we assume to be the resonance decay particles
+		//case 2 is the case in which detected1 uses mass information from breakup1
+		//						  and detected2 uses mass information from breakup3
+		//						  and detected3 uses mass information from breakup2
+		//case2:
+		{ {det1.E, det1.Theta, det1.Phi, this->breakup1.mass},
+		  {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
+		  {det2.E, det2.Theta, det2.Phi, this->breakup2.mass}
+		},
+
+
+		/*******************************************************
+		 * 										  			   *
+		 *					 CASE III BELOW:			 	   *
+		 * 				  c = kin4mc particle 3 = det2		   *
+		 * 				  d = kin4mc particle 2 = det1 		   *
+		 * 				  e = kin4mc particle 4 = det3 		   *
+		 * 										  			   *
+		 *******************************************************/
+		//in this case, we assume we detect the ejectile and three particles we assume to be the resonance decay particles
+		//case 3 is the case in which detected1 uses mass information from breakup2
+		//						  and detected2 uses mass information from breakup1
+		//						  and detected3 uses mass information from breakup3
+		//case3:
+		{ {det2.E, det2.Theta, det2.Phi, this->breakup2.mass},
+		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass},
+		  {det3.E, det3.Theta, det3.Phi, this->breakup3.mass}
+		},
+
+
+		/*******************************************************
+		 * 										  			   *
+		 *					  CASE IV BELOW:				   *
+		 * 				  c = kin4mc particle 3 = det2		   *
+		 * 				  d = kin4mc particle 4 = det3		   *
+		 * 				  e = kin4mc particle 2 = det1		   *
+		 * 										  			   *
+		 *******************************************************/
+		//case 4 is the case in which detected1 uses mass information from breakup2
+		//						  and detected2 uses mass information from breakup3
+		//						  and detected3 uses mass information from breakup1
+		//case4:
+		{ {det2.E, det2.Theta, det2.Phi, this->breakup2.mass},
+		  {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
+		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass}
+		},
+
+
+		/*******************************************************
+		 * 										  			   *
+		 *					  CASE V BELOW:				  	   *
+		 * 				  c = kin4mc particle 4 = det3		   *
+		 * 				  d = kin4mc particle 2 = det1		   *
+		 * 				  e = kin4mc particle 3 = det2		   *
+		 * 										  			   *
+		 *******************************************************/
+		//case 5 is the case in which detected1 uses mass information from breakup3
+		//						  and detected2 uses mass information from breakup1
+		//						  and detected3 uses mass information from breakup2
+		//case5:
+		{ {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
+		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass},
+		  {det2.E, det2.Theta, det2.Phi, this->breakup2.mass}
+		},
+
+
+		/*******************************************************
+		 * 										  			   *
+		 *					  CASE VI BELOW:				   *
+		 * 				  c = kin4mc particle 4 = det3		   *
+		 * 				  d = kin4mc particle 3 = det2		   *
+		 * 				  e = kin4mc particle 2 = det1		   *
+		 * 										  			   *
+		 *******************************************************/
+		//case 6 is the case in which detected1 uses mass information from breakup3
+		//						  and detected2 uses mass information from breakup2
+		//						  and detected3 uses mass information from breakup1
+		//case6:
+		{ {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
+		  {det2.E, det2.Theta, det2.Phi, this->breakup2.mass},
+		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass}
+		}
+	};
+
 	
-	CaseResult4 case1, case2, case3, case4, case5, case6;
-
-	/*******************************************************
-	 * 										  			   *
-	 *					  CASE I BELOW:				 	   *
-	 * 				  c = kin4mc particle 2 = det1		   *
-	 * 				  d = kin4mc particle 3 = det2		   *
-	 * 				  e = kin4mc particle 4 = det3		   *
-	 * 										  			   *
-	 *******************************************************/
-	//in this case, we assume we detect the ejectile and three particles we assume to be the resonance decay particles
-	//case 1 is the case in which detected1 uses mass information from breakup1
-	//						  and detected2 uses mass information from breakup2
-	//						  and detected3 uses mass information from breakup3
-
-	cE = detected1E;
-	cTheta = detected1Theta;
-	cPhi = detected1Phi;
-
-	dE = detected2E;
-	dTheta = detected2Theta;
-	dPhi = detected2Phi;
-
-	eE = detected3E;
-	eTheta = detected3Theta;
-	ePhi = detected3Phi;
-
-	case1 = CalculateCase(ejectileE, ejectileTheta, ejectilePhi,
-						  cE, cTheta, cPhi,
-						  dE, dTheta, dPhi,
-						  eE, eTheta, ePhi);
-	results[0] = case1;
-
-	/*******************************************************
-	 * 										  			   *
-	 *					  CASE II BELOW:				   *
-	 * 				  c = kin4mc particle 2 = det1 		   *
-	 * 				  d = kin4mc particle 4 = det3 		   *
-	 * 				  e = kin4mc particle 3 = det2 		   *
-	 * 										  			   *
-	 *******************************************************/
-	//in this case, we assume we detect the ejectile and three particles we assume to be the resonance decay particles
-	//case 2 is the case in which detected1 uses mass information from breakup1
-	//						  and detected2 uses mass information from breakup3
-	//						  and detected3 uses mass information from breakup2
-
-	cE = detected1E;
-	cTheta = detected1Theta;
-	cPhi = detected1Phi;
-
-	dE = detected3E;
-	dTheta = detected3Theta;
-	dPhi = detected3Phi;
-
-	eE = detected2E;
-	eTheta = detected2Theta;
-	ePhi = detected2Phi;
-
-	case2 = CalculateCase(ejectileE, ejectileTheta, ejectilePhi,
-						  cE, cTheta, cPhi,
-						  dE, dTheta, dPhi,
-						  eE, eTheta, ePhi);
-	results[1] = case2;
-
-	/*******************************************************
-	 * 										  			   *
-	 *					 CASE III BELOW:			 	   *
-	 * 				  c = kin4mc particle 3 = det2		   *
-	 * 				  d = kin4mc particle 2 = det1 		   *
-	 * 				  e = kin4mc particle 4 = det3 		   *
-	 * 										  			   *
-	 *******************************************************/
-	//in this case, we assume we detect the ejectile and three particles we assume to be the resonance decay particles
-	//case 3 is the case in which detected1 uses mass information from breakup2
-	//						  and detected2 uses mass information from breakup1
-	//						  and detected3 uses mass information from breakup3
-
-	cE = detected2E;
-	cTheta = detected2Theta;
-	cPhi = detected2Phi;
-
-	dE = detected1E;
-	dTheta = detected1Theta;
-	dPhi = detected1Phi;
-
-	eE = detected3E;
-	eTheta = detected3Theta;
-	ePhi = detected3Phi;
-
-	case3 = CalculateCase(ejectileE, ejectileTheta, ejectilePhi,
-						  cE, cTheta, cPhi,
-						  dE, dTheta, dPhi,
-						  eE, eTheta, ePhi);
-	results[2] = case3;
-
-	/*******************************************************
-	 * 										  			   *
-	 *					  CASE IV BELOW:				   *
-	 * 				  c = kin4mc particle 3 = det2		   *
-	 * 				  d = kin4mc particle 4 = det3		   *
-	 * 				  e = kin4mc particle 2 = det1		   *
-	 * 										  			   *
-	 *******************************************************/
-	//case 4 is the case in which detected1 uses mass information from breakup2
-	//						  and detected2 uses mass information from breakup3
-	//						  and detected3 uses mass information from breakup1
-
-	cE = detected2E;
-	cTheta = detected2Theta;
-	cPhi = detected2Phi;
-
-	dE = detected3E;
-	dTheta = detected3Theta;
-	dPhi = detected3Phi;
-
-	eE = detected1E;
-	eTheta = detected1Theta;
-	ePhi = detected1Phi;
-
-	case4 = CalculateCase(ejectileE, ejectileTheta, ejectilePhi,
-						  cE, cTheta, cPhi,
-						  dE, dTheta, dPhi,
-						  eE, eTheta, ePhi);
-	results[3] = case4;
-
-	/*******************************************************
-	 * 										  			   *
-	 *					  CASE V BELOW:				  	   *
-	 * 				  c = kin4mc particle 4 = det3		   *
-	 * 				  d = kin4mc particle 2 = det1		   *
-	 * 				  e = kin4mc particle 3 = det2		   *
-	 * 										  			   *
-	 *******************************************************/
-	//case 5 is the case in which detected1 uses mass information from breakup3
-	//						  and detected2 uses mass information from breakup1
-	//						  and detected3 uses mass information from breakup2
-
-	cE = detected3E;
-	cTheta = detected3Theta;
-	cPhi = detected3Phi;
-
-	dE = detected1E;
-	dTheta = detected1Theta;
-	dPhi = detected1Phi;
-
-	eE = detected2E;
-	eTheta = detected2Theta;
-	ePhi = detected2Phi;
-
-	case5 = CalculateCase(ejectileE, ejectileTheta, ejectilePhi,
-						  cE, cTheta, cPhi,
-						  dE, dTheta, dPhi,
-						  eE, eTheta, ePhi);
-	results[4] = case5;
-
-	/*******************************************************
-	 * 										  			   *
-	 *					  CASE VI BELOW:				   *
-	 * 				  c = kin4mc particle 4 = det3		   *
-	 * 				  d = kin4mc particle 3 = det2		   *
-	 * 				  e = kin4mc particle 2 = det1		   *
-	 * 										  			   *
-	 *******************************************************/
-	//case 6 is the case in which detected1 uses mass information from breakup3
-	//						  and detected2 uses mass information from breakup2
-	//						  and detected3 uses mass information from breakup1
-
-	cE = detected3E;
-	cTheta = detected3Theta;
-	cPhi = detected3Phi;
-
-	dE = detected2E;
-	dTheta = detected2Theta;
-	dPhi = detected2Phi;
-
-	eE = detected1E;
-	eTheta = detected1Theta;
-	ePhi = detected1Phi;
-
-	case6 = CalculateCase(ejectileE, ejectileTheta, ejectilePhi,
-						  cE, cTheta, cPhi,
-						  dE, dTheta, dPhi,
-						  eE, eTheta, ePhi);
-	results[5] = case6;
-
-	//*******************************************************
+	//loop through permutations and try every case!
+	int i=0;
+	for(const auto& [bu1, bu2, bu3] : permutations){ 
+		results[i++] = CalculateCase(ej, bu1, bu2, bu3);
+	}
 
 	//finished computing all 6 cases, now return!
 	return results;
@@ -738,14 +676,10 @@ Double_t IMMMA_Tool_4::AnalyzeEventCalculateRecoilExE(Double_t ejectileE, Double
 	recoil = beam + target - ejectile;
 
 	return (recoil.M() - this->recoil.mass);
-
 }
 
 //below function holds the main logic to be used in AnalyzeIMMEvent to avoid explicitly rewriting the same code for all 6 cases
-CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
-								   		Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
-								   		Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi,
-								   		Double_t detected3E, Double_t detected3Theta, Double_t detected3Phi)
+CaseResult4 IMMMA_Tool_4::CalculateCase(const DetectedParticle4& ej, const DetectedParticle4& bu1, const DetectedParticle4& bu2, const DetectedParticle4& bu3)
 {
 
 	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, breakup1_4vect, breakup2_4vect, breakup3_4vect;
@@ -753,11 +687,11 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 	CaseResult4 result;
 
 	//calculate momenta:
-	Double_t plab_detected1 = sqrt(2*detected1E*this->breakup1.mass);
-	Double_t plab_detected2 = sqrt(2*detected2E*this->breakup2.mass);
-	Double_t plab_detected3 = sqrt(2*detected3E*this->breakup3.mass);
+	Double_t plab_detected1 = sqrt(2*bu1.E*bu1.Mass);
+	Double_t plab_detected2 = sqrt(2*bu2.E*bu2.Mass);
+	Double_t plab_detected3 = sqrt(2*bu3.E*bu3.Mass);
 
-	Double_t plab_ej = sqrt(2*ejectileE*this->ejectile.mass);
+	Double_t plab_ej = sqrt(2*ej.E*ej.Mass);
 	Double_t plab_beam = sqrt(2*this->beam_energy*this->beam.mass);
 	Double_t plab_target = 0.;
 
@@ -765,25 +699,25 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 	beam_4vect.SetPxPyPzE(0.,0.,plab_beam,this->beam.mass+this->beam_energy);
 	target_4vect.SetPxPyPzE(0.,0.,0.,this->target.mass);
 
-	ejectile_4vect.SetPxPyPzE(plab_ej*sin(degToRad*ejectileTheta)*cos(degToRad*ejectilePhi),
-							  plab_ej*sin(degToRad*ejectileTheta)*sin(degToRad*ejectilePhi),
-							  plab_ej*cos(degToRad*ejectileTheta),
-							  this->ejectile.mass+ejectileE);
+	ejectile_4vect.SetPxPyPzE(plab_ej*sin(degToRad*ej.Theta)*cos(degToRad*ej.Phi),
+							  plab_ej*sin(degToRad*ej.Theta)*sin(degToRad*ej.Phi),
+							  plab_ej*cos(degToRad*ej.Theta),
+							  ej.Mass+ej.E);
 
-	breakup1_4vect.SetPxPyPzE(plab_detected1*sin(degToRad*detected1Theta)*cos(degToRad*detected1Phi),
-							  plab_detected1*sin(degToRad*detected1Theta)*sin(degToRad*detected1Phi),
-							  plab_detected1*cos(degToRad*detected1Theta),
-							  this->breakup1.mass+detected1E);
+	breakup1_4vect.SetPxPyPzE(plab_detected1*sin(degToRad*bu1.Theta)*cos(degToRad*bu1.Phi),
+							  plab_detected1*sin(degToRad*bu1.Theta)*sin(degToRad*bu1.Phi),
+							  plab_detected1*cos(degToRad*bu1.Theta),
+							  bu1.Mass+bu1.E);
 
-	breakup2_4vect.SetPxPyPzE(plab_detected2*sin(degToRad*detected2Theta)*cos(degToRad*detected2Phi),
-							  plab_detected2*sin(degToRad*detected2Theta)*sin(degToRad*detected2Phi),
-							  plab_detected2*cos(degToRad*detected2Theta),
-							  this->breakup2.mass+detected2E);
+	breakup2_4vect.SetPxPyPzE(plab_detected2*sin(degToRad*bu2.Theta)*cos(degToRad*bu2.Phi),
+							  plab_detected2*sin(degToRad*bu2.Theta)*sin(degToRad*bu2.Phi),
+							  plab_detected2*cos(degToRad*bu2.Theta),
+							  bu2.Mass+bu2.E);
 
-	breakup3_4vect.SetPxPyPzE(plab_detected3*sin(degToRad*detected3Theta)*cos(degToRad*detected3Phi),
-							  plab_detected3*sin(degToRad*detected3Theta)*sin(degToRad*detected3Phi),
-							  plab_detected3*cos(degToRad*detected3Theta),
-							  this->breakup3.mass+detected3E);
+	breakup3_4vect.SetPxPyPzE(plab_detected3*sin(degToRad*bu3.Theta)*cos(degToRad*bu3.Phi),
+							  plab_detected3*sin(degToRad*bu3.Theta)*sin(degToRad*bu3.Phi),
+							  plab_detected3*cos(degToRad*bu3.Theta),
+							  bu3.Mass+bu3.E);
 
 	//reconstruct recoil_4vect using beam, target, and ejectile information:
 	//recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
@@ -823,9 +757,9 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 	Double_t vcm2 = ((1/breakup2_4vect.Energy())*breakup2_4vect.Vect()).Mag();
 	Double_t vcm3 = ((1/breakup3_4vect.Energy())*breakup3_4vect.Vect()).Mag();
 
-	Double_t kecm1 = 0.5*this->breakup1.mass*vcm1*vcm1;
-	Double_t kecm2 = 0.5*this->breakup2.mass*vcm2*vcm2;
-	Double_t kecm3 = 0.5*this->breakup3.mass*vcm3*vcm3;
+	Double_t kecm1 = 0.5*bu1.Mass*vcm1*vcm1;
+	Double_t kecm2 = 0.5*bu2.Mass*vcm2*vcm2;
+	Double_t kecm3 = 0.5*bu3.Mass*vcm3*vcm3;
 
 	Double_t ecm = kecm1 + kecm2 + kecm3;
 
@@ -848,9 +782,9 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 	result.KEcm1 = kecm1;
 	result.ThetaCM1 = theta1;
 	result.PhiCM1 = phi1;
-	result.ELab1 = detected1E;
-	result.ThetaLab1 = detected1Theta;
-	result.PhiLab1 = detected1Phi;
+	result.ELab1 = bu1.E;
+	result.ThetaLab1 = bu1.Theta;
+	result.PhiLab1 = bu1.Phi;
 	result.breakup1_LabAngleWRTVCM = breakup1_LabAngleWRTVCM;
 	result.breakup1_CMAngleWRTVCM = breakup1_CMAngleWRTVCM;
 
@@ -858,9 +792,9 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 	result.KEcm2 = kecm2;
 	result.ThetaCM2 = theta2;
 	result.PhiCM2 = phi2;
-	result.ELab2 = detected2E;
-	result.ThetaLab2 = detected2Theta;
-	result.PhiLab2 = detected2Phi;
+	result.ELab2 = bu2.E;
+	result.ThetaLab2 = bu2.Theta;
+	result.PhiLab2 = bu2.Phi;
 	result.breakup2_LabAngleWRTVCM = breakup2_LabAngleWRTVCM;
 	result.breakup2_CMAngleWRTVCM = breakup2_CMAngleWRTVCM;
 
@@ -868,9 +802,9 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(Double_t ejectileE, Double_t ejectileThe
 	result.KEcm3 = kecm3;
 	result.ThetaCM3 = theta3;
 	result.PhiCM3 = phi3;
-	result.ELab3 = detected3E;
-	result.ThetaLab3 = detected3Theta;
-	result.PhiLab3 = detected3Phi;
+	result.ELab3 = bu3.E;
+	result.ThetaLab3 = bu3.Theta;
+	result.PhiLab3 = bu3.Phi;
 	result.breakup3_LabAngleWRTVCM = breakup3_LabAngleWRTVCM;
 	result.breakup3_CMAngleWRTVCM = breakup3_CMAngleWRTVCM;
 
