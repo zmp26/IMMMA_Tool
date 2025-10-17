@@ -24,7 +24,8 @@ struct Nucleus4{
 
 struct CaseResult4{
 	//boost vector:
-	TVector3 boostvector;
+	TVector3 boostvector1;
+	TVector3 boostvector2;
 
 	//CM constants results
 	Double_t Vcm1;
@@ -63,7 +64,8 @@ struct CaseResult4{
 	Double_t bu2InvMass;
 	Double_t bu3InvMass;
 
-	Double_t Ecm;
+	Double_t Ecm1;
+	Double_t Ecm2;
 
 	Double_t recoilExE;
 
@@ -72,7 +74,7 @@ struct CaseResult4{
 	// and that CM3 == missingCM for MMM
 
 	TString ToString(){
-		return Form("\n\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf",Vcm1,KEcm1,ThetaCM1,PhiCM1,Vcm2,KEcm2,ThetaCM2,PhiCM2,Vcm3,KEcm3,ThetaCM3,PhiCM3,Ecm);
+		return Form("\n\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf",Vcm1,KEcm1,ThetaCM1,PhiCM1,Vcm2,KEcm2,ThetaCM2,PhiCM2,Vcm3,KEcm3,ThetaCM3,PhiCM3,Ecm1,Ecm2);
 	}
 };
 
@@ -215,6 +217,11 @@ public:
 								   Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
 								   Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi,
 								   Double_t detected3E, Double_t detected3Theta, Double_t detected3Phi);
+
+	//MMM Event Analysis:
+	std::array<CaseResult4, 6> AnalyzeMMMEvent(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
+								   Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
+								   Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi);
 
 
 
