@@ -574,8 +574,8 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Dou
 		//						  and detected3 uses mass information from breakup2
 		//case2:
 		{ {det1.E, det1.Theta, det1.Phi, this->breakup1.mass},
-		  {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
-		  {det2.E, det2.Theta, det2.Phi, this->breakup2.mass}
+		  {det3.E, det3.Theta, det3.Phi, this->breakup2.mass},
+		  {det2.E, det2.Theta, det2.Phi, this->breakup3.mass}
 		},
 
 
@@ -592,8 +592,8 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Dou
 		//						  and detected2 uses mass information from breakup1
 		//						  and detected3 uses mass information from breakup3
 		//case3:
-		{ {det2.E, det2.Theta, det2.Phi, this->breakup2.mass},
-		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass},
+		{ {det2.E, det2.Theta, det2.Phi, this->breakup1.mass},
+		  {det1.E, det1.Theta, det1.Phi, this->breakup2.mass},
 		  {det3.E, det3.Theta, det3.Phi, this->breakup3.mass}
 		},
 
@@ -610,9 +610,9 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Dou
 		//						  and detected2 uses mass information from breakup3
 		//						  and detected3 uses mass information from breakup1
 		//case4:
-		{ {det2.E, det2.Theta, det2.Phi, this->breakup2.mass},
-		  {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
-		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass}
+		{ {det2.E, det2.Theta, det2.Phi, this->breakup1.mass},
+		  {det3.E, det3.Theta, det3.Phi, this->breakup2.mass},
+		  {det1.E, det1.Theta, det1.Phi, this->breakup3.mass}
 		},
 
 
@@ -628,9 +628,9 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Dou
 		//						  and detected2 uses mass information from breakup1
 		//						  and detected3 uses mass information from breakup2
 		//case5:
-		{ {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
-		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass},
-		  {det2.E, det2.Theta, det2.Phi, this->breakup2.mass}
+		{ {det3.E, det3.Theta, det3.Phi, this->breakup1.mass},
+		  {det1.E, det1.Theta, det1.Phi, this->breakup2.mass},
+		  {det2.E, det2.Theta, det2.Phi, this->breakup3.mass}
 		},
 
 
@@ -646,24 +646,30 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeIMMEvent(Double_t ejectileE, Dou
 		//						  and detected2 uses mass information from breakup2
 		//						  and detected3 uses mass information from breakup1
 		//case6:
-		{ {det3.E, det3.Theta, det3.Phi, this->breakup3.mass},
+		{ {det3.E, det3.Theta, det3.Phi, this->breakup1.mass},
 		  {det2.E, det2.Theta, det2.Phi, this->breakup2.mass},
-		  {det1.E, det1.Theta, det1.Phi, this->breakup1.mass}
+		  {det1.E, det1.Theta, det1.Phi, this->breakup3.mass}
 		}
 	};
 
 	
 	//loop through permutations and try every case!
-	int i=0;
-	for(const auto& [bu1, bu2, bu3] : permutations){ 
-		results[i++] = CalculateCase(ej, bu1, bu2, bu3);
+	// int i=0;
+	// for(const auto& [bu1, bu2, bu3] : permutations){ 
+	// 	results[i++] = CalculateCaseIMM(ej, bu1, bu2, bu3);
+	// }
+
+	for(size_t i=0; i<permutations.size(); i++){
+		results[i] = CalculateCaseIMM(ej, get<0>(permutations[i]), get<1>(permutations[i]), get<2>(permutations[i]));
 	}
+
+	// for(const auto& [bu1, bu2, bu3] : permutations){
+	// 	std::cout << "permutation: [" << bu1, << ", " << bu2 << ", " << bu3 << "]\n";
+	// 	}
 
 	//finished computing all 6 cases, now return!
 	return results;
 }
-
-
 
 std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi,
 														 Double_t detected1E, Double_t detected1Theta, Double_t detected1Phi,
@@ -716,6 +722,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 	TVector3 boostvector1 = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 	TVector3 boostvector2 = (-1/daughter1_4vect.Energy())*daughter1_4vect.Vect();
 
+	//Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	//calculate breakup angle in lab:
@@ -804,6 +811,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 
 	result1.recInvMass = recoil_4vect.M();
 	result1.ejInvMass =  ejectile_4vect.M();
+	result1.daughterInvMass = daughter1_4vect.M();
 	result1.bu1InvMass = missing_4vect.M();
 	result1.bu2InvMass = observed1_4vect.M();
 	result1.bu3InvMass = observed2_4vect.M();
@@ -853,6 +861,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 	boostvector1 = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 	boostvector2 = (-1/daughter1_4vect.Energy())*daughter1_4vect.Vect();
 
+	//recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	//calculate breakup angle in lab:
@@ -943,6 +952,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 
 	result2.recInvMass = recoil_4vect.M();
 	result2.ejInvMass =  ejectile_4vect.M();
+	result2.daughterInvMass = daughter1_4vect.M();
 	result2.bu1InvMass = missing_4vect.M();
 	result2.bu2InvMass = observed1_4vect.M();
 	result2.bu3InvMass = observed2_4vect.M();
@@ -992,6 +1002,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 	boostvector1 = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 	boostvector2 = (-1/daughter1_4vect.Energy())*daughter1_4vect.Vect();
 	
+	//recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	//calculate breakup angle in lab:
@@ -1079,6 +1090,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 
 	result3.recInvMass = recoil_4vect.M();
 	result3.ejInvMass =  ejectile_4vect.M();
+	result3.daughterInvMass = daughter1_4vect.M();
 	result3.bu1InvMass = missing_4vect.M();
 	result3.bu2InvMass = observed1_4vect.M();
 	result3.bu3InvMass = observed2_4vect.M();
@@ -1129,6 +1141,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 	boostvector1 = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 	boostvector2 = (-1/daughter1_4vect.Energy())*daughter1_4vect.Vect();
 
+	//recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	//calculate breakup angle in lab:
@@ -1217,6 +1230,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 
 	result4.recInvMass = recoil_4vect.M();
 	result4.ejInvMass =  ejectile_4vect.M();
+	result4.daughterInvMass = daughter1_4vect.M();
 	result4.bu1InvMass = missing_4vect.M();
 	result4.bu2InvMass = observed1_4vect.M();
 	result4.bu3InvMass = observed2_4vect.M();
@@ -1265,6 +1279,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 	boostvector1 = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 	boostvector2 = (-1/daughter1_4vect.Energy())*daughter1_4vect.Vect();
 
+	//recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	//calculate breakup angle in lab:
@@ -1353,6 +1368,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 
 	result5.recInvMass = recoil_4vect.M();
 	result5.ejInvMass =  ejectile_4vect.M();
+	result5.daughterInvMass = daughter1_4vect.M();
 	result5.bu1InvMass = missing_4vect.M();
 	result5.bu2InvMass = observed1_4vect.M();
 	result5.bu3InvMass = observed2_4vect.M();
@@ -1402,6 +1418,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 	boostvector1 = (-1/recoil_4vect.Energy())*recoil_4vect.Vect();
 	boostvector2 = (-1/daughter1_4vect.Energy())*daughter1_4vect.Vect();
 
+	//recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 	recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
 
 	//calculate breakup angle in lab:
@@ -1490,6 +1507,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 
 	result6.recInvMass = recoil_4vect.M();
 	result6.ejInvMass =  ejectile_4vect.M();
+	result6.daughterInvMass = daughter1_4vect.M();
 	result6.bu1InvMass = missing_4vect.M();
 	result6.bu2InvMass = observed1_4vect.M();
 	result6.bu3InvMass = observed2_4vect.M();
@@ -1501,6 +1519,7 @@ std::array<CaseResult4, 6> IMMMA_Tool_4::AnalyzeMMMEvent(Double_t ejectileE, Dou
 	return {result1, result2, result3, result4, result5, result6};
 
 }
+
 
 
 Double_t IMMMA_Tool_4::AnalyzeEventCalculateRecoilExE(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi){
@@ -1517,58 +1536,68 @@ Double_t IMMMA_Tool_4::AnalyzeEventCalculateRecoilExE(Double_t ejectileE, Double
 	return (recoil.M() - this->recoil.mass);
 }
 
-//below function holds the main logic to be used in AnalyzeIMMEvent to avoid explicitly rewriting the same code for all 6 cases
-CaseResult4 IMMMA_Tool_4::CalculateCase(const DetectedParticle4& ej, const DetectedParticle4& bu1, const DetectedParticle4& bu2, const DetectedParticle4& bu3)
+
+
+CaseResult4 IMMMA_Tool_4::CalculateCaseIMM(const DetectedParticle4& ej, const DetectedParticle4& bu1, const DetectedParticle4& bu2, const DetectedParticle4& bu3)
 {
 
-	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, breakup1_4vect, breakup2_4vect, breakup3_4vect;
-	TLorentzVector daughter1_4vect;
+	//CalculateCaseIMM always assumes ej = ejectile, bu1 = breakup1, bu2 = breakup2, bu3 = breakup3
+	//The arguments should be cycled and called individually as done in AnalyzeEventIMM
 
+
+	//result to get returned:
 	CaseResult4 result;
 
-	//calculate momenta:
-	Double_t plab_detected1 = sqrt(2*bu1.E*bu1.Mass);
-	Double_t plab_detected2 = sqrt(2*bu2.E*bu2.Mass);
-	Double_t plab_detected3 = sqrt(2*bu3.E*bu3.Mass);
+	//TLorentzVectors for reaction particles:
+	TLorentzVector beam_4vect, target_4vect, ejectile_4vect, recoil_4vect, breakup1_4vect, daughter1_4vect, breakup2_4vect, breakup3_4vect;
 
-	Double_t plab_ej = sqrt(2*ej.E*ej.Mass);
-	Double_t plab_beam = sqrt(2*this->beam_energy*this->beam.mass);
-	Double_t plab_target = 0.;
 
-	//initialize 4vectors from the above information:
-	beam_4vect.SetPxPyPzE(0.,0.,plab_beam,this->beam.mass+this->beam_energy);
-	target_4vect.SetPxPyPzE(0.,0.,0.,this->target.mass);
+	//calculate momenta from assumed masses
+	double plab_detected1 = sqrt(2*bu1.E*bu1.Mass);
+	double plab_detected2 = sqrt(2*bu2.E*bu2.Mass);
+	double plab_detected3 = sqrt(2*bu3.E*bu3.Mass);
+
+	//and momenta w/ known masses:
+	double plab_ej = sqrt(2*ej.E*ej.Mass);
+	double plab_beam = sqrt(2*beam_energy*beam.mass);
+	double plab_target = 0.;
+
+	//initialize 4vectors w/ above momenta:
+	beam_4vect.SetPxPyPzE(0., 0., plab_beam, beam.mass + beam_energy);
+	target_4vect.SetPxPyPzE(0., 0., 0., target.mass);
 
 	ejectile_4vect.SetPxPyPzE(plab_ej*sin(degToRad*ej.Theta)*cos(degToRad*ej.Phi),
 							  plab_ej*sin(degToRad*ej.Theta)*sin(degToRad*ej.Phi),
 							  plab_ej*cos(degToRad*ej.Theta),
-							  ej.Mass+ej.E);
+							  ej.Mass + ej.E);
 
 	breakup1_4vect.SetPxPyPzE(plab_detected1*sin(degToRad*bu1.Theta)*cos(degToRad*bu1.Phi),
 							  plab_detected1*sin(degToRad*bu1.Theta)*sin(degToRad*bu1.Phi),
 							  plab_detected1*cos(degToRad*bu1.Theta),
-							  bu1.Mass+bu1.E);
+							  bu1.Mass + bu1.E);
 
 	breakup2_4vect.SetPxPyPzE(plab_detected2*sin(degToRad*bu2.Theta)*cos(degToRad*bu2.Phi),
 							  plab_detected2*sin(degToRad*bu2.Theta)*sin(degToRad*bu2.Phi),
 							  plab_detected2*cos(degToRad*bu2.Theta),
-							  bu2.Mass+bu2.E);
+							  bu2.Mass + bu2.E);
 
 	breakup3_4vect.SetPxPyPzE(plab_detected3*sin(degToRad*bu3.Theta)*cos(degToRad*bu3.Phi),
 							  plab_detected3*sin(degToRad*bu3.Theta)*sin(degToRad*bu3.Phi),
 							  plab_detected3*cos(degToRad*bu3.Theta),
-							  bu3.Mass+bu3.E);
+							  bu3.Mass + bu3.E);
 
-	//reconstruct recoil_4vect using beam, target, and ejectile information:
-	//recoil_4vect = beam_4vect + target_4vect - ejectile_4vect;
-	//recontruct recoil_4vect using bu1, bu2, and bu3 information:
-	recoil_4vect = breakup1_4vect + breakup2_4vect + breakup3_4vect;
-
+	//reconstruct the resonance from breakup2+breakup3 (daughter1)
 	daughter1_4vect = breakup2_4vect + breakup3_4vect;
 
-	//calculate the excitation energy of the recoil:
-	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass; // entirely due to excitation!
+	//reconstruct recoil
+	recoil_4vect = daughter1_4vect + breakup1_4vect;
 
+
+	//calculate excitation energy of the recoil:
+	//Double_t recoil_ExcessEnergy = recoil_4vect.M() - recoil.mass;
+	Double_t recoil_ExcessEnergy = recoil_4vect.M() - this->recoil.mass;
+
+	
 	//calculate breakup angle in lab:
 	//(between 3, 4, so final break up particles)
 	Double_t breakupAngleLab = radToDeg*acos(breakup2_4vect.Vect().Dot(breakup3_4vect.Vect())/(breakup2_4vect.Vect().Mag()*breakup3_4vect.Vect().Mag()));
@@ -1664,8 +1693,12 @@ CaseResult4 IMMMA_Tool_4::CalculateCase(const DetectedParticle4& ej, const Detec
 	result.recInvMass = recoil_4vect.M();
 	result.ejInvMass = ejectile_4vect.M();
 	result.bu1InvMass = breakup1_4vect.M();
+	result.daughterInvMass = daughter1_4vect.M();
+	//result.daughterInvMass = daughter1_4vect.Vect().Mag2()/(2*daughter1.mass);
 	result.bu2InvMass = breakup2_4vect.M();
 	result.bu3InvMass = breakup3_4vect.M();
 
-	return result;
+	return result;	
+
+
 }

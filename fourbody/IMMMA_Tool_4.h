@@ -60,6 +60,7 @@ struct CaseResult4{
 
 	Double_t recInvMass;
 	Double_t ejInvMass;
+	Double_t daughterInvMass;
 	Double_t bu1InvMass;
 	Double_t bu2InvMass;
 	Double_t bu3InvMass;
@@ -224,7 +225,6 @@ public:
 								   Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi);
 
 
-
 private:
 	const Double_t degToRad = M_PI/180.;
 	const Double_t radToDeg = 180./M_PI;
@@ -265,7 +265,9 @@ private:
 	// 						  Double_t detected2E, Double_t detected2Theta, Double_t detected2Phi,
 	// 						  Double_t detected3E, Double_t detected3Theta, Double_t detected3Phi);
 
-	CaseResult4 CalculateCase(const DetectedParticle4& ej, const DetectedParticle4& bu1, const DetectedParticle4& bu2, const DetectedParticle4& bu3);
+
+	CaseResult4 CalculateCaseIMM(const DetectedParticle4& ej, const DetectedParticle4& bu1, const DetectedParticle4& bu2, const DetectedParticle4& bu3);
+	//CaseResult4 CalculateCaseMMM(const DetectedParticle4& ej, const DetectedParticle4& det1, const DetectedParticle4& det2);
 
 	//helper function to calculate recoil excitation energy:
 	Double_t AnalyzeEventCalculateRecoilExE(Double_t ejectileE, Double_t ejectileTheta, Double_t ejectilePhi);
